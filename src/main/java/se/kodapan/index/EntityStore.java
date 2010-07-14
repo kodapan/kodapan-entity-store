@@ -123,11 +123,11 @@ public class EntityStore implements Serializable, Externalizable {
   }
 
   @SuppressWarnings("unchecked")
-  public <EntityType extends EntityObject> PrimaryIndex<EntityType> getPrimaryIndex(Class<EntityType> type) {
-    PrimaryIndex<EntityType> index = (PrimaryIndex<EntityType>) getPrimaryIndices().get(type);
+  public <EntityType extends EntityObject> PrimaryIndex<EntityType> getPrimaryIndex(Class<EntityType> entityType) {
+    PrimaryIndex<EntityType> index = (PrimaryIndex<EntityType>) getPrimaryIndices().get(entityType);
     if (index == null) {
-      index = new PrimaryIndex<EntityType>(this, type);
-      getPrimaryIndices().put(type, index);
+      index = new PrimaryIndex<EntityType>(this, entityType);
+      getPrimaryIndices().put(entityType, index);
     }
     return index;
   }
@@ -136,21 +136,20 @@ public class EntityStore implements Serializable, Externalizable {
   /**
    * Adds object to all class indices.
    *
-   * @param object
-   * @param <EntityType>
+   * @param entity
    * @return previous value
    */
   @SuppressWarnings("unchecked")
-  public <EntityType extends EntityObject> EntityType put(EntityType object) {
+  public EntityObject put(EntityObject entity) {
 
-    if (object.getId() == null) {
-      throw new NullPointerException("No entity object identity in " + object.toString());
+    if (entity.getId() == null) {
+      throw new NullPointerException("No entity object identity in " + entity.toString());
     }
 
     boolean seen = false;
-    EntityType previous = null;
-    for (Class entityClass : gatherEntityObjectClasses(object.getClass())) {
-      EntityType value = (EntityType) getPrimaryIndex(entityClass).put(object);
+    EntityObject previous = null;
+    for (Class entityClass : gatherEntityObjectClasses(entity.getClass())) {
+      EntityObject value = getPrimaryIndex(entityClass).put(entity);
       if (seen
           && (
           (previous != null && !previous.equals(value)))
@@ -171,15 +170,19 @@ public class EntityStore implements Serializable, Externalizable {
   }
   
   @SuppressWarnings("unchecked")
-  public void remove(EntityObject entity) {
+  public boolean remove(EntityObject entity) {
+    boolean success = false;
     for (Class entityClass : gatherEntityObjectClasses(entity.getClass())) {
       PrimaryIndex<? extends EntityObject> primaryIndex = getPrimaryIndex(entityClass);
       primaryIndex.getEntitiesById().remove(entity.getId());
       for (SecondaryIndex secondaryIndex : primaryIndex.getSecondaryIndicesByName().values()) {
-        secondaryIndex.remove(entity);
+        if (secondaryIndex.remove(entity)) {
+          success = true;
+        }
       }
     }
     decouple(entity);
+    return success;
   }
 
   public void decouple(Object instance) {

@@ -17,6 +17,7 @@
       <version>1.5.6</version>
     </dependency>
 
+    <!-- http://github.com/karlwettin/kodapan-common -->
     <dependency>
       <groupId>se.kodapan.common</groupId>
       <artifactId>common</artifactId>
