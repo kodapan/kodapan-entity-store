@@ -1,8 +1,6 @@
 I've tried to factor out this entity object management I wrote for a project of mine that use Prevayler.
 
-http://github.com/karlwettin/kodapan-entity-store
-
-This is basically a think layer around the two follwoing classes:
+This is basically a thick layer around the two follwoing classes:
 
 /** All identifiable objects stored in a primary index must implement this class */
 interface EntityObject {
