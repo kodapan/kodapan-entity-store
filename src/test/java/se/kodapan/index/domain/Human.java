@@ -19,13 +19,6 @@ public class Human extends LegalPerson {
   @BinaryAssociationEnd(otherEndName = "employees", otherEndClass = Organization.class, associationClass = Employment.class, multiplicity = "0..*")
   private List<Employment> employments = new ArrayList<Employment>();
 
-  @Override
-  public void decouple() {
-    for (Employment employment : getEmployments()) {
-      employment.getEmployer().getEmployees().remove(employment);
-    }
-  }
-
   public Human() {
   }
 

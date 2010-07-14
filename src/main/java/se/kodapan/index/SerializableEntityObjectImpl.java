@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 import se.kodapan.io.SerializableBean;
 
 /**
- * todo> not implemented
- * <p/>
  * An entity object that serialize using bean getters and setters
  * to allow for subclasses for lazy
  *
@@ -34,7 +32,7 @@ public class SerializableEntityObjectImpl extends SerializableBean
 
   private static long serialVersionUID = 1l;
   
-  public static Logger log = LoggerFactory.getLogger(EntityObject.class);
+  public static Logger log = LoggerFactory.getLogger(SerializableEntityObjectImpl.class);
 
   private String id;
 
@@ -44,10 +42,6 @@ public class SerializableEntityObjectImpl extends SerializableBean
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  @Override
-  public void decouple() {
   }
 
   @Override

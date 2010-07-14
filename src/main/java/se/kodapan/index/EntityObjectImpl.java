@@ -35,13 +35,6 @@ public class EntityObjectImpl implements EntityObject {
 
   private String id;
 
-  /**
-   * Does nothing.
-   */
-  @Override
-  public void decouple() {
-  }
-
   @Override
   public void writeExternal(ObjectOutput objectOutput) throws IOException {
     objectOutput.writeInt(1); // version

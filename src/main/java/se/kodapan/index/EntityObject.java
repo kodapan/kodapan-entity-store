@@ -26,18 +26,10 @@ import java.io.Serializable;
  */
 public interface EntityObject extends Serializable, Externalizable {
 
-//  public static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(.class);
-//  private static long serialVersionUID = 1l;
+//  public static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(.class);
+//  private static final long serialVersionUID = 1l;
 
   public abstract String getId();
   public abstract void setId(String id);
-
-  /**
-   * remove any composite parts
-   * and unbound this instance from non composite ends
-   *
-   * todo this should be replaced with silvertejp uml annotations
-   */
-  public abstract void decouple();
 
 }
