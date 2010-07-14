@@ -29,10 +29,8 @@ import java.util.List;
  */
 public class ContactInformation extends SerializableBean {
 
-  @BinaryAssociationEnd(aggregation = Aggregation.COMPOSITE, otherEndClass = Address.class)
   private Address address = new Address();
 
-  @BinaryAssociationEnd(aggregation = Aggregation.COMPOSITE, otherEndClass = PhoneNumber.class)
   private List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();
 
   public Address getAddress() {
