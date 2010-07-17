@@ -6,6 +6,7 @@ import se.kodapan.index.domain.Employment;
 import se.kodapan.index.domain.Human;
 import se.kodapan.index.domain.LegalPerson;
 import se.kodapan.index.domain.Organization;
+import se.kodapan.io.SerializableTool;
 import se.kodapan.lang.reflect.augmentation.Mirror;
 
 import java.util.Date;
@@ -95,6 +96,10 @@ public class TestEntityStore extends TestCase {
     assertEquals(bob, humansByLastName.get("Gustavsson"));
 
     System.currentTimeMillis();
+
+    // makes sure its possible to serialize the graph.
+    SerializableTool.clone(store);
+
   }
 
 }

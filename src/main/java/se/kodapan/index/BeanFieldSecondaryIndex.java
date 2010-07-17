@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
  * @author kalle
  * @since 2010-jul-11 17:46:37
  */
-public class BeanFieldSecondaryIndex<EntityType extends EntityObject, AttributeType> extends MapSetSecondaryIndex<EntityType> {
+public class BeanFieldSecondaryIndex<EntityType extends EntityObject, AttributeType> extends SimpleMapSetSecondaryIndex<EntityType> {
 
   private Class<AttributeType> fieldType;
 
@@ -74,9 +74,7 @@ public class BeanFieldSecondaryIndex<EntityType extends EntityObject, AttributeT
 
   public Method getGetter() throws NoSuchFieldException, NoSuchMethodException {
     if (getter == null) {
-      // todo this only allows for fields in the given entity,
-      // todo so for now it will not accept an index for Human#name if attributes is declared as LegalPerson#name   
-      getter = ReflectionUtil.getGetter(getPrimaryIndex().getEntityType().getDeclaredField(fieldName));
+      getter = ReflectionUtil.getGetter(getPrimaryIndex().getEntityType(), fieldName);
     }
     return getter;
   }

@@ -23,10 +23,13 @@ import java.util.Set;
 /**
  * @author kalle
  * @since 2010-jul-12 16:24:21
+ *
+ * @param <ResultType> Result type
+ * @param <EntityType> Primary index entity type.
  */
-public interface SecondaryIndex<EntityType extends EntityObject> extends Serializable, Externalizable {
+public interface SecondaryIndex<ResultType, EntityType extends EntityObject> extends Serializable, Externalizable {
 
-  public abstract Object getSecondaryKey(EntityType entity);
+  public abstract Object getSecondaryKey(ResultType resultType);
 
   public abstract Object getSecondaryKey(Object... parameters);
 
@@ -39,9 +42,9 @@ public interface SecondaryIndex<EntityType extends EntityObject> extends Seriali
    * @return 
    * @throws RuntimeException if more than one instance match the parameters (is not unique).
    */
-  public abstract EntityType get(Object... parameters);
+  public abstract ResultType get(Object... parameters);
 
-  public abstract Set<EntityType> list(Object... parameters);
+  public abstract Set<ResultType> list(Object... parameters);
 
   /**
    * @param entity

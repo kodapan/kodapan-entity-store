@@ -28,12 +28,12 @@ import java.util.Set;
  * @author kalle
  * @since 2010-jul-10 00:37:11
  */
-public abstract class MapSetSecondaryIndex<EntityType extends EntityObject>
-    extends AbstractSecondaryIndex<EntityType> {
+public abstract class MapSetSecondaryIndex<ResultType, EntityType extends EntityObject>
+    extends AbstractSecondaryIndex<ResultType, EntityType> {
 
   private static final long serialVersionUID = 1l;
 
-  private MapSet<Object, EntityType> mapSet = new MapSet<Object, EntityType>();
+  private MapSet<Object, ResultType> mapSet = new MapSet<Object, ResultType>();
 
   protected MapSetSecondaryIndex() {
   }
@@ -42,7 +42,7 @@ public abstract class MapSetSecondaryIndex<EntityType extends EntityObject>
     super(name, entityTypePrimaryIndex);
   }
 
-  protected MapSetSecondaryIndex(String name, PrimaryIndex<EntityType> entityTypePrimaryIndex, MapSet<Object, EntityType> mapSet) {
+  protected MapSetSecondaryIndex(String name, PrimaryIndex<EntityType> entityTypePrimaryIndex, MapSet<Object, ResultType> mapSet) {
     super(name, entityTypePrimaryIndex);
     this.mapSet = mapSet;
   }
@@ -79,57 +79,23 @@ public abstract class MapSetSecondaryIndex<EntityType extends EntityObject>
   }
 
 
-  /**
-   *
-   * @param entity
-   * @return true if removed
-   */
-  @Override
-  public boolean remove(EntityType entity) {
-    return remove(entity, getSecondaryKey(entity));
-  }
-
-  public boolean remove(EntityType object, Object secondaryKey) {
-    Set<EntityType> values = getMapSet().get(secondaryKey);
-    return values != null && values.remove(object);
-  }
 
   @Override
-  public void put(EntityType object) {
-    if (!getMapSet().add(getSecondaryKey(object), object)) {
-      throw new InconsistencyException("Entity " + object.toString() + " is already known in " + this.toString());
-    }
-  }
-
-  @Override
-  public EntityType get(Object... parameters) {
+  public Set<ResultType> list(Object... parameters) {
     Object secondaryKey = getSecondaryKey(parameters);
-    Set<EntityType> entities = getMapSet().get(secondaryKey);
-    if (entities == null || entities.size() == 0) {
+    Set<ResultType> results = getMapSet().get(secondaryKey);
+    if (results == null || results.size() == 0) {
       return null;
     }
-    if (entities.size() > 1) {
-      throw new RuntimeException("Expected a single unique entity but found " + entities.size());
-    }
-    return entities.iterator().next();
-  }
-
-  @Override
-  public Set<EntityType> list(Object... parameters) {
-    Object secondaryKey = getSecondaryKey(parameters);
-    Set<EntityType> entities = getMapSet().get(secondaryKey);
-    if (entities == null || entities.size() == 0) {
-      return null;
-    }
-    return entities;
+    return results;
   }
 
 
-  public MapSet<Object, EntityType> getMapSet() {
+  public MapSet<Object, ResultType> getMapSet() {
     return mapSet;
   }
 
-  public void setMapSet(MapSet<Object, EntityType> mapSet) {
+  public void setMapSet(MapSet<Object, ResultType> mapSet) {
     this.mapSet = mapSet;
   }
 

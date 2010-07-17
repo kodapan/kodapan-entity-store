@@ -65,14 +65,16 @@ public class EntityStore implements Serializable, Externalizable {
     }
   }
 
-  public <T extends EntityObject> boolean registerSecondaryIndex(SecondaryIndex<T> secondaryIndex) {
+  public boolean registerSecondaryIndex(SecondaryIndex secondaryIndex) {
     SecondaryIndex previous = getSecondaryIndicesByName().get(secondaryIndex.getName());
     if (previous != null) {
       log.warn("A secondary index named " + secondaryIndex.getName() + " already exists.");
       return false;
     }
 
+    // todo lock entity store put and remove
     secondaryIndex.reconstruct();
+    // todo unlock
 
     getSecondaryIndicesByName().put(secondaryIndex.getName(), secondaryIndex);
     secondaryIndex.getPrimaryIndex().getSecondaryIndicesByName().put(secondaryIndex.getName(), secondaryIndex);

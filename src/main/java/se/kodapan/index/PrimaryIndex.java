@@ -40,7 +40,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
   private EntityStore store;
 
-  private Map<String, SecondaryIndex<EntityType>> secondaryIndicesByName = new HashMap<String, SecondaryIndex<EntityType>>();
+  private Map<String, SecondaryIndex<Object, EntityType>> secondaryIndicesByName = new HashMap<String, SecondaryIndex<Object, EntityType>>();
 
   private Map<String, EntityType> entitiesById;
   private Class<EntityType> entityType;
@@ -100,7 +100,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
   }
 
   private void removeFromSecondaryIndices(EntityType entity) {
-    for (SecondaryIndex<EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
+    for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
       if (!secondaryIndex.remove(entity)) {
         log.error("Inconsistency, the removed entity was not available in " + secondaryIndex.toString());
       }
@@ -138,7 +138,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
           if (previous != entity) {
             // add in secondary indices
-            for (SecondaryIndex<EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
+            for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
               secondaryIndex.put(entity);
             }
           }
@@ -161,11 +161,11 @@ public class PrimaryIndex<EntityType extends EntityObject>
     return entityType;
   }
 
-  public Map<String, SecondaryIndex<EntityType>> getSecondaryIndicesByName() {
+  public Map<String, SecondaryIndex<Object, EntityType>> getSecondaryIndicesByName() {
     return secondaryIndicesByName;
   }
 
-  public void setSecondaryIndicesByName(Map<String, SecondaryIndex<EntityType>> secondaryIndicesByName) {
+  public void setSecondaryIndicesByName(Map<String, SecondaryIndex<Object, EntityType>> secondaryIndicesByName) {
     this.secondaryIndicesByName = secondaryIndicesByName;
   }
 

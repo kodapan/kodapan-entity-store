@@ -60,7 +60,7 @@ public class TestSerialization extends TestCase {
     Object object = _class.newInstance();
     setNonNullableField(object);
 
-    List<Field> allFields = ReflectionUtil.gatherAllBeanFields(_class);
+    List<Field> allFields = new ArrayList<Field>(ReflectionUtil.gatherAllBeanFields(_class).values());
     assertNonNullSerializedValuesEquals(_class, object, allFields);
     assertNullSerializedValuesEquals(_class, object, allFields);
 
@@ -194,7 +194,7 @@ public class TestSerialization extends TestCase {
 
     Object clone = os.readObject();
 
-    for (Field field : ReflectionUtil.gatherAllBeanFields(object.getClass())) {
+    for (Field field : ReflectionUtil.gatherAllBeanFields(object.getClass()).values()) {
 
       System.out.println("Testing " + _class.getName() + "#" + field.getName());
 

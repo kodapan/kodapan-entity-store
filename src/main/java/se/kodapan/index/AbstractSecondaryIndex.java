@@ -30,8 +30,8 @@ import java.util.Set;
  * @author kalle
  * @since 2010-jul-10 00:37:11
  */
-public abstract class AbstractSecondaryIndex<EntityType extends EntityObject>
-    implements SecondaryIndex<EntityType> {
+public abstract class AbstractSecondaryIndex<ResultType, EntityType extends EntityObject>
+    implements SecondaryIndex<ResultType, EntityType> {
 
   private static final long serialVersionUID = 1l;
 
@@ -68,16 +68,16 @@ public abstract class AbstractSecondaryIndex<EntityType extends EntityObject>
   }
 
   @Override
-  public EntityType get(Object... parameters) {
+  public ResultType get(Object... parameters) {
     Object secondaryKey = getSecondaryKey(parameters);
-    Set<EntityType> entities = list(secondaryKey);
-    if (entities == null || entities.size() == 0) {
+    Set<ResultType> results = list(secondaryKey);
+    if (results == null || results.size() == 0) {
       return null;
     }
-    if (entities.size() > 1) {
-      throw new RuntimeException("Expected a single unique entity but found " + entities.size());
+    if (results.size() > 1) {
+      throw new RuntimeException("Expected a single unique entity but found " + results.size());
     }
-    return entities.iterator().next();
+    return results.iterator().next();
   }
 
 
