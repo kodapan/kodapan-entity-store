@@ -152,14 +152,13 @@ public class EntityStore implements Serializable, Externalizable {
     EntityObject previous = null;
     for (Class entityClass : gatherEntityObjectClasses(entity.getClass())) {
       EntityObject value = getPrimaryIndex(entityClass).put(entity);
-      if (seen
-          && (
-          (previous != null && !previous.equals(value)))
-          || (value!= null && !value.equals(previous))
-      ){
-        throw new RuntimeException("Index inconsistency");
+      if (seen) {
+        if ((previous != null && !previous.equals(value))
+            || (value != null && !value.equals(previous))) {
+          throw new InconsistencyException("");
+        }
       }
-      previous = value;      
+      previous = value;
       seen = true;
     }
     return previous;
@@ -170,7 +169,7 @@ public class EntityStore implements Serializable, Externalizable {
   public EntityObject get(String id) {
     return getPrimaryIndex(EntityObject.class).get(id);
   }
-  
+
   @SuppressWarnings("unchecked")
   public boolean remove(EntityObject entity) {
     boolean success = false;
@@ -199,7 +198,7 @@ public class EntityStore implements Serializable, Externalizable {
 
       if (end.isNavigatable()) {
 
-        log.info("Decoupling " + end.toString());        
+        log.info("Decoupling " + end.toString());
 
         if (end.getQualification() != null) {
           // has qualifications
@@ -330,7 +329,7 @@ public class EntityStore implements Serializable, Externalizable {
       } else {
         log.info("Instance " + endInstance + " removed from " + otherEnd.toString() + " " + otherEndInstance);
       }
-      
+
     }
 
 

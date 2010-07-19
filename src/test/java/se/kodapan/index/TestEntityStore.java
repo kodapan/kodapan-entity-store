@@ -95,6 +95,12 @@ public class TestEntityStore extends TestCase {
 
     assertEquals(bob, humansByLastName.get("Gustavsson"));
 
+    bob.setLastName("Svensson");
+    store.put(bob);
+
+    assertEquals(null, humansByLastName.get("Gustavsson"));
+    assertEquals(bob, humansByLastName.get("Svensson"));
+
     System.currentTimeMillis();
 
     // makes sure its possible to serialize the graph.

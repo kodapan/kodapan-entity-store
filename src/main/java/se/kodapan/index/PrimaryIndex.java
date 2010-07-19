@@ -130,17 +130,18 @@ public class PrimaryIndex<EntityType extends EntityObject>
         public EntityType put(String s, EntityType entity) {
           EntityType previous = super.put(s, entity);
           if (previous != null && previous != entity) {
-            // remove in secondary indices
-            removeFromSecondaryIndices(previous);
             // remove composite parts and decouple from associations
             getStore().decouple(previous);
           }
 
-          if (previous != entity) {
-            // add in secondary indices
-            for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
-              secondaryIndex.put(entity);
-            }
+          if (previous != null) {
+            // remove in secondary indices
+            removeFromSecondaryIndices(previous);
+          }
+
+          // add in secondary indices
+          for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
+            secondaryIndex.put(entity);
           }
 
           return previous;

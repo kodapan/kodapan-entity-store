@@ -25,10 +25,11 @@ import java.io.ObjectOutput;
 import java.util.Set;
 
 /**
- * MapSet based secondary index.
- *
  * @author kalle
  * @since 2010-jul-10 00:37:11
+ *
+ * @param <ResultType> 
+ * @param <EntityType>
  */
 public abstract class AbstractSecondaryIndex<ResultType, EntityType extends EntityObject>
     implements SecondaryIndex<ResultType, EntityType> {

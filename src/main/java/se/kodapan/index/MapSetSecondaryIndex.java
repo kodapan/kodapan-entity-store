@@ -78,8 +78,7 @@ public abstract class MapSetSecondaryIndex<ResultType, EntityType extends Entity
     // todo unlock
   }
 
-
-
+  
   @Override
   public Set<ResultType> list(Object... parameters) {
     Object secondaryKey = getSecondaryKey(parameters);

@@ -62,4 +62,14 @@ public class Human extends LegalPerson {
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
+
+  @Override
+  public String toString() {
+    return "Human{" +
+        "firstNames='" + firstNames + '\'' +
+        ", preferredName='" + preferredName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", employments=" + employments +
+        '}';
+  }
 }

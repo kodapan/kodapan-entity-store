@@ -31,9 +31,7 @@ public abstract class SimpleMapSetSecondaryIndex<EntityType extends EntityObject
    */
   @Override
   public boolean remove(EntityType entity) {
-    Object secondaryKey = getSecondaryKey(entity);
-    Set<EntityType> values = getMapSet().get(secondaryKey);
-    return values != null && values.remove(entity);
+    return getMapSet().removeSetValue(entity);
   }
 
   @Override
