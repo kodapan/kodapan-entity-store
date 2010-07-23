@@ -101,9 +101,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
   private void removeFromSecondaryIndices(EntityType entity) {
     for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
-      if (!secondaryIndex.remove(entity)) {
-        log.error("Inconsistency, the removed entity was not available in " + secondaryIndex.toString());
-      }
+      secondaryIndex.remove(entity);
     }
   }
 
