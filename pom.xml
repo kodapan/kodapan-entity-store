@@ -99,23 +99,32 @@
     </developer>
   </developers>
 
+  <distributionManagement>
+    <repository>
+      <id>kodapan</id>
+      <name>kodapan</name>
+      <url>scp://kodapan.se/home/kalle/www/kodapan/maven/repository</url>
+    </repository>
+  </distributionManagement>
+
 
   <mailingLists>
     <mailingList>
       <name>Project mailing list</name>
-      <post>commons@kodapan.se</post>
+      <post>entity-store@kodapan.se</post>
     </mailingList>
   </mailingLists>
 
   <scm>
-    <url>http://github.com/karlwettin/kodapan-common</url>
-    <connection>scm:git:git://github.com/karlwettin/kodapan-common</connection>
-    <developerConnection>scm:git:git@github.com:karlwettin/kodapan-common.git</developerConnection>
+    <url>http://github.com/karlwettin/kodapan-entity-store</url>
+    <connection>scm:git:git://github.com/karlwettin/kodapan-entity-store</connection>
+    <developerConnection>scm:git:git@github.com:karlwettin/kodapan-entity-store.git</developerConnection>
   </scm>
 
   <issueManagement>
     <system>github</system>
-    <url>http://github.com/karlwettin/kodapan-common/issues</url>
+    <url>http://github.com/karlwettin/kodapan-entity-store/issues</url>
   </issueManagement>
+
 
 </project>

@@ -19,6 +19,7 @@ package se.kodapan.index;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.kodapan.collections.MapSet;
+import se.kodapan.io.SerializableBean;
 import se.kodapan.io.UnsupportedLocalVersion;
 import se.kodapan.lang.reflect.augmentation.Aggregation;
 import se.kodapan.lang.reflect.augmentation.BinaryAssociationClassEnd;
@@ -33,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kalle
  * @since 2010-jul-10 00:29:40
  */
-public class EntityStore implements Serializable, Externalizable {
+public class EntityStore extends SerializableBean {
 
   public static Logger log = LoggerFactory.getLogger(EntityStore.class);
   private static long serialVersionUID = 1l;
@@ -42,28 +43,6 @@ public class EntityStore implements Serializable, Externalizable {
   private Map<Class<? extends EntityObject>, PrimaryIndex> primaryIndices = new ConcurrentHashMap<Class<? extends EntityObject>, PrimaryIndex>();
   private Map<String, SecondaryIndex> secondaryIndicesByName = new HashMap<String, SecondaryIndex>();
 
-
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    objectOutput.writeInt(1); // version
-    objectOutput.writeObject(identityFactory);
-    objectOutput.writeObject(primaryIndices);
-    objectOutput.writeObject(secondaryIndicesByName);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    int version = objectInput.readInt();
-    if (version == 1) {
-      identityFactory = (IdentityFactory) objectInput.readObject();
-      primaryIndices = (Map) objectInput.readObject();
-      secondaryIndicesByName = (Map) objectInput.readObject();
-
-    } else {
-      throw new UnsupportedLocalVersion(version, 1);
-    }
-  }
 
   public boolean registerSecondaryIndex(SecondaryIndex secondaryIndex) {
     SecondaryIndex previous = getSecondaryIndicesByName().get(secondaryIndex.getName());
