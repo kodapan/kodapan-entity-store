@@ -31,7 +31,7 @@ import java.io.ObjectOutput;
 public class EntityObjectImpl implements EntityObject {
 
   public static Logger log = LoggerFactory.getLogger(EntityObject.class);
-  private static long serialVersionUID = 1l;
+  private static final long serialVersionUID = 1l;
 
   private String id;
 

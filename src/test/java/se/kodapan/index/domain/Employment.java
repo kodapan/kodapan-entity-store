@@ -27,7 +27,7 @@ import java.util.Date;
  */
 public class Employment extends SerializableBean {
 
-  private static long serialVersionUID = 1l;
+  private static final long serialVersionUID = 1l;
   
   private Date started;
   private Date ended;

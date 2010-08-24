@@ -31,7 +31,7 @@ import se.kodapan.io.SerializableBean;
 public class SerializableEntityObjectImpl extends SerializableBean
     implements EntityObject {
 
-  private static long serialVersionUID = 1l;
+  private static final long serialVersionUID = 1l;
   
   public static Logger log = LoggerFactory.getLogger(SerializableEntityObjectImpl.class);
 
