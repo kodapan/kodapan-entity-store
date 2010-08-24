@@ -81,13 +81,19 @@ public class EntityStore extends SerializableBean {
         _class = _class.getSuperclass();
       }
       for (Iterator<Class> it = allClasses.iterator(); it.hasNext();) {
-        if (!EntityObject.class.isAssignableFrom(it.next())) {
+        Class type = it.next();
+        if (!hasPrimaryIndex(type)) {
           it.remove();
         }
       }
       primaryIndexClassesByClass.put(_class, allClasses);
     }
     return allClasses;
+  }
+
+  public boolean hasPrimaryIndex(Class entityType) {
+    return EntityObject.class.isAssignableFrom(entityType)
+        && !entityType.isAnnotationPresent(NoPrimaryIndex.class);
   }
 
   private void gatherInterfaces(Set<Class> superInterfaces, Class _class) {
@@ -107,6 +113,9 @@ public class EntityStore extends SerializableBean {
   public <EntityType extends EntityObject> PrimaryIndex<EntityType> getPrimaryIndex(Class<EntityType> entityType) {
     PrimaryIndex<EntityType> index = (PrimaryIndex<EntityType>) getPrimaryIndices().get(entityType);
     if (index == null) {
+      if (!hasPrimaryIndex(entityType)) {
+        return null;
+      }
       index = new PrimaryIndex<EntityType>(this, entityType);
       getPrimaryIndices().put(entityType, index);
     }

@@ -27,6 +27,7 @@ import se.kodapan.io.SerializableBean;
  * @author kalle
  * @since 2010-jul-10 23:33:55
  */
+@NoPrimaryIndex
 public class SerializableEntityObjectImpl extends SerializableBean
     implements EntityObject {
 

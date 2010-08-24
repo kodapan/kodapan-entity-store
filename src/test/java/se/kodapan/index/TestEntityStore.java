@@ -106,6 +106,7 @@ public class TestEntityStore extends TestCase {
     // makes sure its possible to serialize the graph.
     SerializableTool.clone(store);
 
+    assertNull(store.getPrimaryIndex(SerializableEntityObjectImpl.class));
   }
 
 }
