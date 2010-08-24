@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EntityStore extends SerializableBean {
 
   public static Logger log = LoggerFactory.getLogger(EntityStore.class);
-  private static long serialVersionUID = 1l;
+  private static final long serialVersionUID = -7674601394695412814l;
 
   private IdentityFactory identityFactory;
   private Map<Class<? extends EntityObject>, PrimaryIndex> primaryIndices = new ConcurrentHashMap<Class<? extends EntityObject>, PrimaryIndex>();
