@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class Human extends LegalPerson {
 
+  private static final long serialVersionUID = 1l;
+  
   private String firstNames;
   private String preferredName;
   private String lastName;

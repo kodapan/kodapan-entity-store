@@ -12,6 +12,8 @@ import java.util.Date;
  */
 public class LegalPerson extends SerializableEntityObjectImpl {
 
+  private static final long serialVersionUID = 1l;
+  
   private Date anno;
   private String name;
 

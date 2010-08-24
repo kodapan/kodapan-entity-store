@@ -24,6 +24,8 @@ import se.kodapan.io.SerializableBean;
  */
 public class PhoneNumber extends SerializableBean {
 
+  private static final long serialVersionUID = 1l;
+  
   private String type;
   private String phoneNumber;
 

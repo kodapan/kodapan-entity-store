@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class Organization extends LegalPerson {
 
+  private static final long serialVersionUID = 1l;
+  
   @BinaryAssociationEnd(otherEndName = "employments", otherEndClass = Human.class, associationClass = Employment.class, multiplicity = "0..*")
   private List<Employment> employees = new ArrayList<Employment>();
 

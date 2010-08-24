@@ -29,6 +29,8 @@ import java.util.List;
  */
 public class ContactInformation extends SerializableBean {
 
+  private static final long serialVersionUID = 1l;
+  
   private Address address = new Address();
 
   private List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();

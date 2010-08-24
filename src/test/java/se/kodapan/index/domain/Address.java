@@ -24,6 +24,8 @@ import se.kodapan.io.SerializableBean;
  */
 public class Address extends SerializableBean {
 
+  private static final long serialVersionUID = 1l;
+  
   private String street;
   private String city;
   private String country;
