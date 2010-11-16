@@ -29,8 +29,18 @@ import java.util.Set;
  */
 public interface SecondaryIndex<ResultType, EntityType extends EntityObject> extends Serializable, Externalizable {
 
-  public abstract Object getSecondaryKey(ResultType resultType);
+  /**
+   * @param resultType instance containing the secondary key
+   * @return secondary key of parameter resultType
+   * @throws UnsupportedOperationException if method is not implemented
+   */
+  public abstract Object getSecondaryKey(ResultType resultType) throws UnsupportedOperationException;
 
+  /**
+   * @param parameters values used to construct the secondary key
+   * @return secondary key constructed from parameter parameters
+   * @throws UnsupportedOperationException if method is not implemented
+   */
   public abstract Object getSecondaryKey(Object... parameters);
 
 
@@ -50,7 +60,7 @@ public interface SecondaryIndex<ResultType, EntityType extends EntityObject> ext
    * @param entity
    * @return true if removed
    */
-  public abstract boolean remove(EntityType entity);
+  public abstract void remove(EntityType entity);
 
   public abstract String getName();
 

@@ -2,8 +2,6 @@ package se.kodapan.index;
 
 import se.kodapan.collections.MapSet;
 
-import java.util.Set;
-
 /**
  * Same secondary type as primary type
  * @author kalle
@@ -30,8 +28,8 @@ public abstract class SimpleMapSetSecondaryIndex<EntityType extends EntityObject
    * @return true if removed
    */
   @Override
-  public boolean remove(EntityType entity) {
-    return getMapSet().removeSetValue(entity);
+  public void remove(EntityType entity) {
+    getMapSet().removeSetValue(entity);
   }
 
   @Override
