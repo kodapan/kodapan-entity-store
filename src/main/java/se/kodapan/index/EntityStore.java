@@ -176,7 +176,9 @@ public class EntityStore extends SerializableBean {
 
   public void decouple(Object instance) {
 
-    log.info("Decoupling " + instance);
+    if (log.isInfoEnabled()) {
+      log.info("Decoupling " + instance);
+    }
 
     Mirror mirror = Mirror.reflect(instance.getClass());
 
@@ -191,7 +193,9 @@ public class EntityStore extends SerializableBean {
 
       if (end.isNavigatable()) {
 
-        log.info("Decoupling " + end.toString());
+        if (log.isInfoEnabled()) {
+          log.info("Decoupling " + end.toString());
+        }
 
         if (end.getQualification() != null) {
           // has qualifications
@@ -250,7 +254,7 @@ public class EntityStore extends SerializableBean {
 
             } else {
               // this is a collection
-              for (Iterator<Object> it = ((Collection) value).iterator(); it.hasNext();) {
+              for (Iterator it = ((Collection) value).iterator(); it.hasNext();) {
                 Object otherEndInstance = it.next();
                 it.remove();
                 decoupleInOtherEnd(instance, end, otherEnd, otherEndInstance, null);
