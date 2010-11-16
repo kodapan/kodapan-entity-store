@@ -21,11 +21,14 @@ public class Human extends LegalPerson {
   @BinaryAssociationEnd(otherEndName = "employees", otherEndClass = Organization.class, associationClass = Employment.class, multiplicity = "0..*")
   private List<Employment> employments = new ArrayList<Employment>();
 
+  // parent and children are actually never used in the tests,
+  // they are here to make sure that null values work!
+
   @BinaryAssociationEnd(otherEndName = "parents", otherEndClass = Human.class, multiplicity = "0..*")
   private List<Human> children;
 
   @BinaryAssociationEnd(otherEndName = "children", otherEndClass = Human.class, multiplicity = "0..2")
-  private List<Human> parents;
+  private List<Human> parents;  
 
   public Human() {
   }

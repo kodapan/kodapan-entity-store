@@ -164,13 +164,13 @@ public class EntityStore extends SerializableBean {
     for (Class entityClass : gatherEntityObjectClasses(entity.getClass())) {
       PrimaryIndex<? extends EntityObject> primaryIndex = getPrimaryIndex(entityClass);
       primaryIndex.getEntitiesById().remove(entity.getId());
-      for (SecondaryIndex secondaryIndex : primaryIndex.getSecondaryIndicesByName().values()) {
-        if (secondaryIndex.remove(entity)) {
-          success = true;
-        }
-      }
+//      for (SecondaryIndex secondaryIndex : primaryIndex.getSecondaryIndicesByName().values()) {
+//        if (secondaryIndex.remove(entity)) {
+//          success = true;
+//        }
+//      }
     }
-    decouple(entity);
+//    decouple(entity);
     return success;
   }
 
