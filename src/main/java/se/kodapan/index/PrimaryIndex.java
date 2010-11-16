@@ -111,47 +111,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
   public void setEntitiesById(Map<String, EntityType> entitiesById) {
     if (entitiesById != null) {
-      entitiesById = new DecoratedMap<String, EntityType>(entitiesById) {
-        @Override
-        public EntityType remove(Object o) {
-          EntityType removed = super.remove(o);
-          if (removed != null) {
-            // remove in secondary indices
-            removeFromSecondaryIndices(removed);
-            // remove composite parts and decouple from associations
-            getStore().decouple(removed);
-          }
-          return removed;
-        }
-
-        @Override
-        public EntityType put(String s, EntityType entity) {
-          EntityType previous = super.put(s, entity);
-          if (previous != null && previous != entity) {
-            // remove composite parts and decouple from associations
-            getStore().decouple(previous);
-          }
-
-          if (previous != null) {
-            // remove in secondary indices
-            removeFromSecondaryIndices(previous);
-          }
-
-          // add in secondary indices
-          for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
-            secondaryIndex.put(entity);
-          }
-
-          return previous;
-        }
-
-        @Override
-        public void clear() {
-          for (Iterator<Entry<String, EntityType>> it = entrySet().iterator(); it.hasNext();) {
-            it.remove();
-          }
-        }
-      };
+      entitiesById = new EntitiesMap(entitiesById);
     }
     this.entitiesById = entitiesById;
   }
@@ -198,5 +158,60 @@ public class PrimaryIndex<EntityType extends EntityObject>
         "entityType=" + entityType +
         ", store=" + store +
         '}';
+  }
+
+  /**
+   * decorates entities and makes sure they
+   * at put are added to secondary indices
+   * (and that previous instance with same identity is decoupled)
+   * at remove is decoupled and removed from secondary indices
+   */
+  public class EntitiesMap extends DecoratedMap<String, EntityType> {
+
+    private static final long serialVersionUID = 1L;
+
+    private EntitiesMap(Map<String, EntityType> decoratedMap) {
+      super(decoratedMap);
+    }
+
+    @Override
+    public EntityType remove(Object o) {
+      EntityType removed = super.remove(o);
+      if (removed != null) {
+        // remove in secondary indices
+        removeFromSecondaryIndices(removed);
+        // remove composite parts and decouple from associations
+        getStore().decouple(removed);
+      }
+      return removed;
+    }
+
+    @Override
+    public EntityType put(String s, EntityType entity) {
+      EntityType previous = super.put(s, entity);
+      if (previous != null && previous != entity) {
+        // remove composite parts and decouple from associations
+        getStore().decouple(previous);
+      }
+
+      if (previous != null) {
+        // remove in secondary indices
+        removeFromSecondaryIndices(previous);
+      }
+
+      // add in secondary indices
+      for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
+        secondaryIndex.put(entity);
+      }
+
+      return previous;
+    }
+
+    @Override
+    public void clear() {
+      for (Iterator<Map.Entry<String, EntityType>> it = entrySet().iterator(); it.hasNext();) {
+        it.remove();
+      }
+    }
   }
 }
