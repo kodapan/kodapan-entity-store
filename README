@@ -60,8 +60,6 @@ http://github.com/karlwettin/kodapan-entity-store/raw/master/src/test/java/se/ko
 
 Beans can optionally be augmented with UML class diagram syntax annotations @BinaryAssociationEnd and @BinaryAssociationClassEnd on fields, getters or setters to have the entity store automatically decouple instance from other ends and remove composite parts when the instance is removed. Compare with relational annotations for casacading, many to one and what not, but using OO syntax. Decoupling qualified binary associations (Maps) has not yet been implemented.
 
-I'm new to git, just noticed I've managed to push some old CVS and SVN directories to the repo so there might be other problems related to that too, sorry.
-
 I hope you find this a useful package but any comments or reports are most welcome!
 
 
