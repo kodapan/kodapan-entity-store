@@ -26,6 +26,8 @@ public class TestSerialization extends TestCase {
   @Test
   public void test() throws Exception {
 
+    assertSerializationMatches(SerializationObjectWithTransientField.class);
+
     assertSerializationMatches(LegalPerson.class);
     assertSerializationMatches(Human.class);
     assertSerializationMatches(Employment.class);
