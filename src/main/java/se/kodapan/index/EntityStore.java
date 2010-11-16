@@ -182,6 +182,11 @@ public class EntityStore extends SerializableBean {
 
     for (BinaryAssociationEnd end : mirror.getBinaryAssociationEnds().values()) {
 
+      Object value = end.getAccessor().get(instance);
+      if (value == null) {
+        continue;
+      }
+
       BinaryAssociationEnd otherEnd = end.getOtherEnd();
 
       if (end.isNavigatable()) {
@@ -216,7 +221,7 @@ public class EntityStore extends SerializableBean {
             // has association class
             if (end.getMultiplicity().isMaximumOne()) {
               // this is a field with a unqualified association class
-              Object associationClassInstance = end.getAccessor().get(instance);
+              Object associationClassInstance = value;
               Object otherEndInstance = otherEnd.getAssociationClassEnd().getAccessor().get(associationClassInstance);
               if (otherEndInstance != null) {
                 end.getAccessor().set(instance, (Object) null);
@@ -226,7 +231,7 @@ public class EntityStore extends SerializableBean {
 
             } else {
               // this is a collection of unqualified association classes
-              for (Iterator it = ((Collection) end.getAccessor().get(instance)).iterator(); it.hasNext();) {
+              for (Iterator it = ((Collection) value).iterator(); it.hasNext();) {
                 Object associationClassInstance = it.next();
                 it.remove();
                 Object otherEndInstance = otherEnd.getAssociationClassEnd().getAccessor().get(associationClassInstance);
@@ -239,15 +244,13 @@ public class EntityStore extends SerializableBean {
             // plain old binary association
             if (end.getMultiplicity().isMaximumOne()) {
               // this is a field
-              Object otherEndInstance = end.getAccessor().get(instance);
-              if (otherEndInstance != null) {
-                end.getAccessor().set(instance, null);
-                decoupleInOtherEnd(instance, end, otherEnd, otherEndInstance, null);
-              }
+              Object otherEndInstance = value;
+              end.getAccessor().set(instance, null);
+              decoupleInOtherEnd(instance, end, otherEnd, otherEndInstance, null);
 
             } else {
               // this is a collection
-              for (Iterator<Object> it = ((Collection) end.getAccessor().get(instance)).iterator(); it.hasNext();) {
+              for (Iterator<Object> it = ((Collection) value).iterator(); it.hasNext();) {
                 Object otherEndInstance = it.next();
                 it.remove();
                 decoupleInOtherEnd(instance, end, otherEnd, otherEndInstance, null);

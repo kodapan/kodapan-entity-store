@@ -21,6 +21,12 @@ public class Human extends LegalPerson {
   @BinaryAssociationEnd(otherEndName = "employees", otherEndClass = Organization.class, associationClass = Employment.class, multiplicity = "0..*")
   private List<Employment> employments = new ArrayList<Employment>();
 
+  @BinaryAssociationEnd(otherEndName = "parents", otherEndClass = Human.class, multiplicity = "0..*")
+  private List<Human> children;
+
+  @BinaryAssociationEnd(otherEndName = "children", otherEndClass = Human.class, multiplicity = "0..2")
+  private List<Human> parents;
+
   public Human() {
   }
 
@@ -65,6 +71,22 @@ public class Human extends LegalPerson {
     this.lastName = lastName;
   }
 
+  public List<Human> getChildren() {
+    return children;
+  }
+
+  public void setChildren(List<Human> children) {
+    this.children = children;
+  }
+
+  public List<Human> getParents() {
+    return parents;
+  }
+
+  public void setParents(List<Human> parents) {
+    this.parents = parents;
+  }
+
   @Override
   public String toString() {
     return "Human{" +
@@ -72,6 +94,8 @@ public class Human extends LegalPerson {
         ", preferredName='" + preferredName + '\'' +
         ", lastName='" + lastName + '\'' +
         ", employments=" + employments +
+        ", children=" + children +
+        ", parents=" + parents +
         '}';
   }
 }
