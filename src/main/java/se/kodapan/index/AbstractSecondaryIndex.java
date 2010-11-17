@@ -69,9 +69,8 @@ public abstract class AbstractSecondaryIndex<ResultType, EntityType extends Enti
   }
 
   @Override
-  public ResultType get(Object... parameters) {
-    Object secondaryKey = getSecondaryKey(parameters);
-    Set<ResultType> results = list(secondaryKey);
+  public ResultType get(Object... parameters) {    
+    Set<ResultType> results = list(parameters);
     if (results == null || results.size() == 0) {
       return null;
     }
