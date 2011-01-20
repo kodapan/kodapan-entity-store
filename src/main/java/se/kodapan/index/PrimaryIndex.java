@@ -32,7 +32,7 @@ import java.util.Set;
  * @since 2010-jul-10 01:11:07
  */
 public class PrimaryIndex<EntityType extends EntityObject>
-    implements Serializable, Externalizable {
+    implements Serializable, Externalizable, Iterable<EntityType> {
 
   private static final long serialVersionUID = 1l;
 
@@ -81,6 +81,11 @@ public class PrimaryIndex<EntityType extends EntityObject>
       throw new UnsupportedLocalVersion(version, 1);
     }
 
+  }
+
+  @Override
+  public Iterator<EntityType> iterator() {
+    return getEntitiesById().values().iterator();
   }
 
   public EntityType remove(EntityType entity) {
