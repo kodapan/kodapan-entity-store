@@ -1,6 +1,6 @@
-I've tried to factor out this entity object management I wrote for a project of mine that use Prevayler.
+EEntity object management I wrote for a project of mine that use Prevayler.
 
-This is basically a thick layer around the two follwoing classes:
+Basically a thick layer around the two following classes:
 
 /** All identifiable objects stored in a primary index must implement this class */
 interface EntityObject {
@@ -18,7 +18,6 @@ class EntityStore {
 
 
 Caveat emptor:
-* I ended up rewriting this API from scratch. Even though there are test cases for most of the stuff I have not yet been running this in a live environment so I'm sure there are bugs lurking in the darkness.
 * Forced string identity. (This might change to a byte[].)
 * Identities must be unique within the application, eg a UUID. (Comes with DeterministicUIDHandler)
 * Identities must be set before putting an entity to the store.
@@ -36,7 +35,7 @@ class EntityStore {
   boolean registerSecondaryIndex(String name, SecondaryIndex secondaryIndex);
 }
 
-class PrimaryIndex<EntityType extends EntityObject> {
+class PrimaryIndex<EntityType extends EntityObject> implement Iterable<EntityType> {
   EntityType put(EntityType entity);
   EntityType get(String id);
   boolean remove(String id);
