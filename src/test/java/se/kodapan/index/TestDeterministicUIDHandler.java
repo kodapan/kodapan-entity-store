@@ -20,6 +20,8 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author kalle
@@ -58,6 +60,18 @@ public class TestDeterministicUIDHandler extends TestCase {
 
     System.currentTimeMillis();
 
+  }
+
+  @Test
+  public void testUniquness() {
+    Date now = new Date();
+    DeterministicUIDHandler duid = new DeterministicUIDHandler();
+    Set<String> seen = new LinkedHashSet<String>();
+    for (int i = 0; i < 100000; i++) {
+      if (!seen.add(duid.nextIdentity(now))) {
+        fail();
+      }
+    }
   }
 
 }

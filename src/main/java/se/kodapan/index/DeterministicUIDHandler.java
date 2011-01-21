@@ -23,6 +23,10 @@ import java.io.*;
 import java.util.Date;
 
 /**
+ * Generates 12 bytes long deterministic identities.
+ *
+ * One single transaction (the same execution time) can produce up to Integer.MAX_VALUE identiteis.
+ *
  * @author kalle
  * @since 2010-jan-09 12:47:22
  */
@@ -54,6 +58,10 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
   @Override
   public synchronized String nextIdentity(Date executionTime) {
 
+    if (previousExecutionTimeSequence == Integer.MAX_VALUE) {
+      throw new RuntimeException("This transaction (executionTime) can not create more unique identities. Please create a new transaction or update the sequence counter to long rather than int.");
+    }
+
     int sequence;
     if (!executionTime.equals(previousExecutionTime)) {
       if (previousExecutionTime.getTime() > executionTime.getTime()) {
@@ -65,10 +73,10 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
       sequence = ++previousExecutionTimeSequence;
     }
 
-    byte[] duid = new byte[10];
+    byte[] duid = new byte[12];
 
     byte[] timeBytes = longToByteArray(previousExecutionTime.getTime());
-
+    byte[] sequenceByts = intToByteArray(sequence);
     int index = 0;
 
     duid[index++] = timeBytes[7];
@@ -79,8 +87,10 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     duid[index++] = timeBytes[1];
     duid[index++] = timeBytes[0];
 
-    duid[index++] = (byte) sequence;
-    duid[index++] = (byte) (sequence>>> 8);
+    duid[index++] = sequenceByts[0];
+    duid[index++] = sequenceByts[1];
+    duid[index++] = sequenceByts[2];
+    duid[index++] = sequenceByts[3];
 
     duid[index++] = timeBytes[3];
     duid[index++] = timeBytes[2];
@@ -96,6 +106,16 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     }
     return buf;
   }
+
+  public static byte[] intToByteArray(int i) {
+    byte[] buf = new byte[4];
+    for (int index = 3; index >= 0; --index) {
+      buf[index] = (byte) (i & 0xffL);
+      i >>>= 8;
+    }
+    return buf;
+  }
+
 
   public static String toHex(byte[] arr) {
     StringBuilder sb = new StringBuilder(arr.length * 2);
