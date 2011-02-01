@@ -129,5 +129,4 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     return sb.toString();
   }
 
-
 }
