@@ -9,7 +9,10 @@ import se.kodapan.index.domain.Organization;
 import se.kodapan.io.SerializableTool;
 import se.kodapan.lang.reflect.augmentation.Mirror;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author kalle
@@ -30,6 +33,55 @@ public class TestEntityStore extends TestCase {
     BeanFieldSecondaryIndex<LegalPerson, String> legalPersonsByNameNotUsed = new BeanFieldSecondaryIndex<LegalPerson, String>("legalPersonsByName", store.getPrimaryIndex(LegalPerson.class), String.class, "name");
     assertFalse(store.registerSecondaryIndex(legalPersonsByNameNotUsed));
 
+    final AtomicBoolean failed = new AtomicBoolean(false);
+    store.getPrimaryIndex(LegalPerson.class).getListeners().add(new PrimaryIndexListener<LegalPerson>() {
+
+      ConcurrentLinkedQueue<String> expectedEvents = new ConcurrentLinkedQueue<String>(Arrays.asList(
+          "created Alice Charlotta Tegnér",
+          "created Högsta domstolen",
+          "created Robert Gustavsson",
+          "deleted Alice Charlotta Tegnér",
+          "updated Robert Gustavsson"
+      ));
+
+      @Override
+      public void created(LegalPerson object) {
+//        System.out.println("created " + object.getName());
+
+        String expected = "created " + object.getName();
+        String got = expectedEvents.poll();
+        if (!expected.equals(got)) {
+          failed.set(false);
+          fail("Expected '" + expected + "' + but got '" + got + "'");
+        }
+
+      }
+
+      @Override
+      public void updated(LegalPerson object) {
+//        System.out.println("updated " + object.getName());
+
+        String expected = "updated " + object.getName();
+        String got = expectedEvents.poll();
+        if (!expected.equals(got)) {
+          failed.set(false);
+          fail("Expected '" + expected + "' + but got '" + got + "'");
+        }
+      }
+
+      @Override
+      public void deleted(LegalPerson object) {
+//        System.out.println("deleted " + object.getName());
+
+        String expected = "deleted " + object.getName();
+        String got = expectedEvents.poll();
+        if (!expected.equals(got)) {
+          failed.set(false);
+          fail("Expected '" + expected + "' + but got '" + got + "'");
+        }
+
+      }
+    });
 
     Organization hd = new Organization(null, "Högsta domstolen");
 
@@ -68,7 +120,7 @@ public class TestEntityStore extends TestCase {
     assertEquals(bob, store.get(bob.getId()));
     assertEquals(bob, store.getPrimaryIndex(LegalPerson.class).get(bob.getId()));
     assertEquals(bob, store.getPrimaryIndex(Human.class).get(bob.getId()));
-    assertNull(store.getPrimaryIndex(Organization.class).get(bob .getId()));
+    assertNull(store.getPrimaryIndex(Organization.class).get(bob.getId()));
 
     store.remove(alice);
     assertEquals(0, alice.getEmployments().size());
@@ -87,7 +139,7 @@ public class TestEntityStore extends TestCase {
     assertEquals(bob, store.get(bob.getId()));
     assertEquals(bob, store.getPrimaryIndex(LegalPerson.class).get(bob.getId()));
     assertEquals(bob, store.getPrimaryIndex(Human.class).get(bob.getId()));
-    assertNull(store.getPrimaryIndex(Organization.class).get(bob .getId()));
+    assertNull(store.getPrimaryIndex(Organization.class).get(bob.getId()));
     assertEquals(bob, legalPersonsByName.get("Robert Gustavsson"));
 
     BeanFieldSecondaryIndex<Human, String> humansByLastName = new BeanFieldSecondaryIndex<Human, String>("humansByLastName", store.getPrimaryIndex(Human.class), String.class, "lastName");
@@ -107,6 +159,10 @@ public class TestEntityStore extends TestCase {
     SerializableTool.clone(store);
 
     assertNull(store.getPrimaryIndex(SerializableEntityObjectImpl.class));
+
+    if (failed.get()) {
+      fail("Listeners failed. See log.");
+    }
   }
 
 }

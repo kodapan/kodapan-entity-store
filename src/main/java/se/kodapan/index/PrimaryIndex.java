@@ -22,10 +22,7 @@ import se.kodapan.collections.DecoratedMap;
 import se.kodapan.io.UnsupportedLocalVersion;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author kalle
@@ -37,6 +34,9 @@ public class PrimaryIndex<EntityType extends EntityObject>
   private static final long serialVersionUID = 1l;
 
   public static Logger log = LoggerFactory.getLogger(PrimaryIndex.class);
+
+
+  private transient Set<PrimaryIndexListener<EntityType>> listeners = new HashSet();
 
   private EntityStore store;
 
@@ -137,6 +137,14 @@ public class PrimaryIndex<EntityType extends EntityObject>
     return store;
   }
 
+  public Set<PrimaryIndexListener<EntityType>> getListeners() {
+    return listeners;
+  }
+
+  public void setListeners(Set<PrimaryIndexListener<EntityType>> listeners) {
+    this.listeners = listeners;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -181,19 +189,29 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
     @Override
     public EntityType remove(Object o) {
-      EntityType removed = super.remove(o);
+      final EntityType removed = super.remove(o);
       if (removed != null) {
         // remove in secondary indices
         removeFromSecondaryIndices(removed);
         // remove composite parts and decouple from associations
         getStore().decouple(removed);
+
+        for (final PrimaryIndexListener<EntityType> listener : listeners) {
+          new Thread(new Runnable() {
+            @Override
+            public void run() {
+              listener.deleted(removed);
+            }
+          }).start();
+        }
+
       }
       return removed;
     }
 
     @Override
-    public EntityType put(String s, EntityType entity) {
-      EntityType previous = super.put(s, entity);
+    public EntityType put(String identity, final EntityType entity) {
+      final EntityType previous = super.put(identity, entity);
       if (previous != null && previous != entity) {
         // remove composite parts and decouple from associations
         getStore().decouple(previous);
@@ -207,6 +225,19 @@ public class PrimaryIndex<EntityType extends EntityObject>
       // add in secondary indices
       for (SecondaryIndex<Object, EntityType> secondaryIndex : getSecondaryIndicesByName().values()) {
         secondaryIndex.put(entity);
+      }
+
+      for (final PrimaryIndexListener<EntityType> listener : listeners) {
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            if (previous == null) {
+              listener.created(entity);
+            } else {
+              listener.updated(entity);
+            }
+          }
+        }).start();
       }
 
       return previous;
