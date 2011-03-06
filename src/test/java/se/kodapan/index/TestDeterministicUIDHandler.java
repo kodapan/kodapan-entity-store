@@ -63,6 +63,17 @@ public class TestDeterministicUIDHandler extends TestCase {
   }
 
   @Test
+  public void testDecode() throws Exception {
+    Date now = new Date();
+    DeterministicUIDHandler handler = new DeterministicUIDHandler();
+
+    assertEquals(new DeterministicUIDHandler.DeterministicUID(now, 1), DeterministicUIDHandler.decode(handler.nextIdentity(now)));
+    assertEquals(new DeterministicUIDHandler.DeterministicUID(now, 2), DeterministicUIDHandler.decode(handler.nextIdentity(now)));
+    assertEquals(new DeterministicUIDHandler.DeterministicUID(now, 3), DeterministicUIDHandler.decode(handler.nextIdentity(now)));
+
+  }
+
+  @Test
   public void testUniquness() {
     Date now = new Date();
     DeterministicUIDHandler duid = new DeterministicUIDHandler();

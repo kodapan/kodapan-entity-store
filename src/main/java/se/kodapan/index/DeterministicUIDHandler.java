@@ -17,6 +17,8 @@
 package se.kodapan.index;
 
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import se.kodapan.io.UnsupportedLocalVersion;
 
 import java.io.*;
@@ -24,8 +26,8 @@ import java.util.Date;
 
 /**
  * Generates 12 bytes long deterministic identities.
- *
- * One single transaction (the same execution time) can produce up to Integer.MAX_VALUE identiteis.
+ * <p/>
+ * One single transaction (the same execution time) can produce up to Integer.MAX_VALUE identities.
  *
  * @author kalle
  * @since 2010-jan-09 12:47:22
@@ -76,7 +78,7 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     byte[] duid = new byte[12];
 
     byte[] timeBytes = longToByteArray(previousExecutionTime.getTime());
-    byte[] sequenceByts = intToByteArray(sequence);
+    byte[] sequenceBytes = intToByteArray(sequence);
     int index = 0;
 
     duid[index++] = timeBytes[7];
@@ -87,10 +89,10 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     duid[index++] = timeBytes[1];
     duid[index++] = timeBytes[0];
 
-    duid[index++] = sequenceByts[0];
-    duid[index++] = sequenceByts[1];
-    duid[index++] = sequenceByts[2];
-    duid[index++] = sequenceByts[3];
+    duid[index++] = sequenceBytes[0];
+    duid[index++] = sequenceBytes[1];
+    duid[index++] = sequenceBytes[2];
+    duid[index++] = sequenceBytes[3];
 
     duid[index++] = timeBytes[3];
     duid[index++] = timeBytes[2];
@@ -116,6 +118,31 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     return buf;
   }
 
+  public static int byteArrayToInt(byte[] array) {
+    if (array.length != 4) {
+      throw new IllegalArgumentException("Expected 4 bytes but found " + array.length);
+    }
+    return ((array[0] & 0xff) << 24) |
+        ((array[1] & 0xff) << 16) |
+        ((array[2] & 0xff) << 8) |
+        (array[3] & 0xff);
+  }
+
+
+  public static long byteArrayToLong(byte[] array) {
+    if (array.length != 8) {
+      throw new IllegalArgumentException("Expected 8 bytes but found " + array.length);
+    }
+    return ((long) (array[0] & 0xff) << 56) |
+        ((long) (array[1] & 0xff) << 48) |
+        ((long) (array[2] & 0xff) << 40) |
+        ((long) (array[3] & 0xff) << 32) |
+        ((long) (array[4] & 0xff) << 24) |
+        ((long) (array[5] & 0xff) << 16) |
+        ((long) (array[6] & 0xff) << 8) |
+        ((long) (array[7] & 0xff));
+  }
+
 
   public static String toHex(byte[] arr) {
     StringBuilder sb = new StringBuilder(arr.length * 2);
@@ -129,4 +156,77 @@ public class DeterministicUIDHandler implements IdentityFactory, Serializable, E
     return sb.toString();
   }
 
+  public static DeterministicUID decode(String hex) throws DecoderException {
+    return decode(Hex.decodeHex(hex.toCharArray()));
+  }
+
+  public static DeterministicUID decode(byte[] bytes) {
+    if (bytes.length != 12) {
+      throw new IllegalArgumentException("Expected 12 bytes, got " + bytes.length);
+    }
+    byte[] executionTimeBytes = new byte[8];
+    byte[] sequenceBytes = new byte[4];
+
+
+    int index = 0;
+    executionTimeBytes[7] = bytes[index++];
+    executionTimeBytes[6] = bytes[index++];
+    executionTimeBytes[5] = bytes[index++];
+    executionTimeBytes[4] = bytes[index++];
+
+    executionTimeBytes[1] = bytes[index++];
+    executionTimeBytes[0] = bytes[index++];
+
+    sequenceBytes[0] = bytes[index++];
+    sequenceBytes[1] = bytes[index++];
+    sequenceBytes[2] = bytes[index++];
+    sequenceBytes[3] = bytes[index++];
+
+    executionTimeBytes[3] = bytes[index++];
+    executionTimeBytes[2] = bytes[index++];
+
+    Date executionTime = new Date(byteArrayToLong(executionTimeBytes));
+    int sequence = byteArrayToInt(sequenceBytes);
+
+    return new DeterministicUID(executionTime, sequence);
+  }
+
+  public static class DeterministicUID {
+
+    private Date executionTime;
+    private int sequence;
+
+    public DeterministicUID(Date executionTime, int sequence) {
+      this.executionTime = executionTime;
+      this.sequence = sequence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      DeterministicUID that = (DeterministicUID) o;
+
+      if (sequence != that.sequence) return false;
+      if (executionTime != null ? !executionTime.equals(that.executionTime) : that.executionTime != null) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      int result = executionTime != null ? executionTime.hashCode() : 0;
+      result = 31 * result + sequence;
+      return result;
+    }
+
+    public final Date getExecutionTime() {
+      return executionTime;
+    }
+
+    public final int getSequence() {
+      return sequence;
+    }
+  }
 }
