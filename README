@@ -1,4 +1,4 @@
-EEntity object management I wrote for a project of mine that use Prevayler.
+Entity object management I wrote for a project of mine that use Prevayler.
 
 Basically a thick layer around the two following classes:
 
@@ -64,7 +64,7 @@ I hope you find this a useful package but any comments or reports are most welco
 
 This depends on maven project kodapan-common <http://github.com/karlwettin/kodapan-common> for annotations, reflection and collections. mvn install. I think some of you might question the SerializableBean class and want to remove it. It's work in progress for a more refactor friendly java serialization.
 
-
+Also available in maven repository at <http://kodapan.se/maven/repository>.
 
 
 karl.wettin@gmail.com
