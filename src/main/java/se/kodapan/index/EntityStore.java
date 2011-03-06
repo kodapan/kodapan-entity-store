@@ -43,7 +43,14 @@ public class EntityStore extends SerializableBean {
   private Map<Class<? extends EntityObject>, PrimaryIndex> primaryIndices = new ConcurrentHashMap<Class<? extends EntityObject>, PrimaryIndex>();
   private Map<String, SecondaryIndex> secondaryIndicesByName = new HashMap<String, SecondaryIndex>();
 
-
+  /**
+   * Adds a secondary index to the store.
+   *
+   * Warning! It might cause inconsistency if touching associated primary indices before this methods returns.
+   *
+   * @param secondaryIndex
+   * @return
+   */
   public boolean registerSecondaryIndex(SecondaryIndex secondaryIndex) {
     SecondaryIndex previous = getSecondaryIndicesByName().get(secondaryIndex.getName());
     if (previous != null) {
@@ -70,6 +77,12 @@ public class EntityStore extends SerializableBean {
    * <p/>
    * [Organization]- - -|>[LegalPerson]<|- - -[Human]
    * Humans and Organizations are all available in the primary index for LegalPersons.
+   *
+   * In effect all classes and interfaces that are direct subclasses of {@link EntityObject} and including,
+   * that are not annotated at class level with {@link NoPrimaryIndex}.
+   *
+   * @param _class class of which all entity classes is to be gathered from.
+   * @return all entity classes associated with the class of parameter _class.
    */
   private Set<Class> gatherEntityObjectClasses(Class _class) {
     Set<Class> allClasses = primaryIndexClassesByClass.get(_class);
@@ -91,6 +104,11 @@ public class EntityStore extends SerializableBean {
     return allClasses;
   }
 
+  /**
+   * Inspects if a class is an persistent entity class or not.
+   * @param entityType class to be inspected
+   * @return true if class of parameter entityType is assignable from {@link EntityObject} and is not annotated at class level with {@link NoPrimaryIndex}.
+   */
   public boolean hasPrimaryIndex(Class entityType) {
     return EntityObject.class.isAssignableFrom(entityType)
         && !entityType.isAnnotationPresent(NoPrimaryIndex.class);
@@ -166,7 +184,7 @@ public class EntityStore extends SerializableBean {
   }
 
   /**
-   * Removes an instance from other end of all bi directional associations.
+   * Removes an instance from other end of all bi-directional associations.
    * This is automatically done when an entity is removed from a primary index.
    * @param instance object to be decoupled
    */
@@ -194,6 +212,8 @@ public class EntityStore extends SerializableBean {
         }
 
         if (end.getQualification() != null) {
+          // todo qualifications
+
           // has qualifications
           if (end.getBinaryAssociation().getAssociationClassEnds() != null) {
             // has qualifications and association class
