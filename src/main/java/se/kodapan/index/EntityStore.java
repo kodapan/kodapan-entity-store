@@ -159,21 +159,17 @@ public class EntityStore extends SerializableBean {
   }
 
   @SuppressWarnings("unchecked")
-  public boolean remove(EntityObject entity) {
-    boolean success = false;
+  public void remove(EntityObject entity) {
     for (Class entityClass : gatherEntityObjectClasses(entity.getClass())) {
-      PrimaryIndex<? extends EntityObject> primaryIndex = getPrimaryIndex(entityClass);
-      primaryIndex.getEntitiesById().remove(entity.getId());
-//      for (SecondaryIndex secondaryIndex : primaryIndex.getSecondaryIndicesByName().values()) {
-//        if (secondaryIndex.remove(entity)) {
-//          success = true;
-//        }
-//      }
+      getPrimaryIndex(entityClass).getEntitiesById().remove(entity.getId());
     }
-//    decouple(entity);
-    return success;
   }
 
+  /**
+   * Removes an instance from other end of all bi directional associations.
+   * This is automatically done when an entity is removed from a primary index.
+   * @param instance object to be decoupled
+   */
   public void decouple(Object instance) {
 
     if (log.isInfoEnabled()) {

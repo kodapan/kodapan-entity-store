@@ -36,7 +36,7 @@ public class PrimaryIndex<EntityType extends EntityObject>
   public static Logger log = LoggerFactory.getLogger(PrimaryIndex.class);
 
 
-  private transient Set<PrimaryIndexListener<EntityType>> listeners = new HashSet();
+  private transient Set<PrimaryIndexListener<EntityType>> listeners = new HashSet<PrimaryIndexListener<EntityType>>();
 
   private EntityStore store;
 
@@ -175,9 +175,9 @@ public class PrimaryIndex<EntityType extends EntityObject>
 
   /**
    * decorates entities and makes sure they
-   * at put are added to secondary indices
+   * at put-time are added to secondary indices
    * (and that previous instance with same identity is decoupled)
-   * at remove is decoupled and removed from secondary indices
+   * at remove-time is decoupled and removed from secondary indices
    */
   public class EntitiesMap extends DecoratedMap<String, EntityType> {
 
