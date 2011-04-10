@@ -6,7 +6,12 @@ package se.kodapan.entitystore;
  */
 public class NotRegisteredAsPrimaryIndexException extends EntityStoreException {
 
+  private static long serialVersionUID = 1l;
+
   private Class entityType;
+
+  public NotRegisteredAsPrimaryIndexException() {
+  }
 
   public NotRegisteredAsPrimaryIndexException(Class entityType) {
     super("Class " + entityType.getName() + " is not registered or annotated to have a primary index");

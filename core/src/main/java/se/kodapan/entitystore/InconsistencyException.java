@@ -22,6 +22,8 @@ package se.kodapan.entitystore;
  */
 public class InconsistencyException extends EntityStoreException {
 
+  private static long serialVersionUID = 1l;
+
   public InconsistencyException() {
   }
 

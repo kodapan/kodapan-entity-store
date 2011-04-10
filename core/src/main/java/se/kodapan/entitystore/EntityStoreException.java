@@ -6,6 +6,8 @@ package se.kodapan.entitystore;
  */
 public class EntityStoreException extends RuntimeException {
 
+  private static long serialVersionUID = 1l;
+
   public EntityStoreException() {
   }
 
