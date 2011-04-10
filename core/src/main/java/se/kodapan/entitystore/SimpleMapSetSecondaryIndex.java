@@ -3,22 +3,22 @@ package se.kodapan.entitystore;
 import se.kodapan.collections.MapSet;
 
 /**
- * Same secondary type as primary type
+ * Entity type is also the result type
  * @author kalle
  * @since 2010-jul-16 04:24:47
  */
-public abstract class SimpleMapSetSecondaryIndex<IdentityType, EntityType> extends MapSetSecondaryIndex<EntityType, IdentityType, EntityType> {
+public abstract class SimpleMapSetSecondaryIndex<PrimaryIndexIdentityType, EntityType> extends MapSetSecondaryIndex<EntityType, PrimaryIndexIdentityType, EntityType> {
 
   private static final long serialVersionUID = 1l;
 
   protected SimpleMapSetSecondaryIndex() {
   }
 
-  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> entityTypePrimaryIndex) {
+  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex) {
     super(name, entityTypePrimaryIndex);
   }
 
-  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, EntityType> objectEntityTypeMapSet) {
+  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, EntityType> objectEntityTypeMapSet) {
     super(name, entityTypePrimaryIndex, objectEntityTypeMapSet);
   }
 

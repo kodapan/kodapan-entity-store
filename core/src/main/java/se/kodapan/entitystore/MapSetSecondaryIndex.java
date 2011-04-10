@@ -28,13 +28,13 @@ import java.util.Set;
  * MapSet based secondary index.
  *
  * @param <ResultType>   response class type, usually the same as the entity type
- * @param <IdentityType> class of identity in entity
+ * @param <PrimaryIndexIdentityType> class of identity in entity
  * @param <EntityType>   class of entity
  * @author kalle
  * @since 2010-jul-10 00:37:11
  */
-public abstract class MapSetSecondaryIndex<ResultType, IdentityType, EntityType>
-    extends AbstractSecondaryIndex<ResultType, IdentityType, EntityType> {
+public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType>
+    extends AbstractSecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType> {
 
   private static final long serialVersionUID = 1l;
 
@@ -43,11 +43,11 @@ public abstract class MapSetSecondaryIndex<ResultType, IdentityType, EntityType>
   protected MapSetSecondaryIndex() {
   }
 
-  protected MapSetSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> entityTypePrimaryIndex) {
+  protected MapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex) {
     super(name, entityTypePrimaryIndex);
   }
 
-  protected MapSetSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, ResultType> mapSet) {
+  protected MapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, ResultType> mapSet) {
     super(name, entityTypePrimaryIndex);
     this.mapSet = mapSet;
   }

@@ -53,6 +53,8 @@ public interface EntityStore {
    * Retrieves primary index for the given parameters,
    * or register and creates it if not yet existing.
    *
+   * It might not be safe to register the same index from two threads at the same time.
+   *
    * @param identityType must be of the top level implementation class when registering the primary index, but when registered this parameters can be any super class or interfaces of the identity.
    * @param entityType
    * @param <IdentityType>

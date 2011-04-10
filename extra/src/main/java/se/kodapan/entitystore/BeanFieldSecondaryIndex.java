@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
  * @author kalle
  * @since 2010-jul-11 17:46:37
  */
-public class BeanFieldSecondaryIndex<IdentityType, EntityType, AttributeType> extends SimpleMapSetSecondaryIndex<IdentityType, EntityType> {
+public class BeanFieldSecondaryIndex<PrimaryIndexIdentityType, EntityType, AttributeType> extends SimpleMapSetSecondaryIndex<PrimaryIndexIdentityType, EntityType> {
 
   private Class<AttributeType> fieldType;
 
@@ -40,13 +40,13 @@ public class BeanFieldSecondaryIndex<IdentityType, EntityType, AttributeType> ex
   }
 
 
-  public BeanFieldSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName) {
+  public BeanFieldSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName) {
     super(name, primaryIndex);
     this.fieldType = fieldType;
     this.fieldName = fieldName;
   }
 
-  public BeanFieldSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName, MapSet<Object, EntityType> map) {
+  public BeanFieldSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName, MapSet<Object, EntityType> map) {
     super(name, primaryIndex, map);
     this.fieldType = fieldType;
     this.fieldName = fieldName;

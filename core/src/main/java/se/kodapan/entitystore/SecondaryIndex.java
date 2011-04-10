@@ -27,7 +27,7 @@ import java.util.Set;
  * @param <ResultType> Result type
  * @param <EntityType> Primary index entity type.
  */
-public interface SecondaryIndex<ResultType, IdentityType, EntityType> extends Serializable, Externalizable {
+public interface SecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType> extends Serializable, Externalizable {
 
 
   /**
@@ -65,7 +65,7 @@ public interface SecondaryIndex<ResultType, IdentityType, EntityType> extends Se
 
   public abstract String getName();
 
-  public abstract PrimaryIndex<IdentityType, EntityType> getPrimaryIndex();
+  public abstract PrimaryIndex<PrimaryIndexIdentityType, EntityType> getPrimaryIndex();
 
   /**
    * adds all entities from the primary index to the secondary index,

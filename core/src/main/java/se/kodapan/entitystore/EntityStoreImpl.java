@@ -97,6 +97,17 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
     return true;
   }
 
+   /**
+   * Inspects if a class is an entity class or not.
+   * (It is entity classes that have primary indices.)
+   *
+   * @param entityType class to be inspected
+   * @return true if class of parameter entityType is added to {@link #entityTypes}
+   */
+  public boolean isEntityType(Class entityType) {
+    return entityTypes.contains(entityType);
+  }
+
   private transient Map<Class, Set<Class>> primaryIndexClassesByClass = new HashMap<Class, Set<Class>>();
 
   /**
@@ -106,7 +117,7 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
    * [Organization]- - -|>[LegalPerson]<|- - -[Human]
    * Humans and Organizations are all available in the primary index for LegalPersons.
    * <p/>
-   * In effect all classes annotated at class level with {@link Entity}. todo or manually registered different
+   * In effect all classes added to {@link #entityTypes}.
    *
    * @param _class class of which all entity classes is to be gathered from.
    * @return all entity classes associated with the class of parameter _class.
@@ -132,15 +143,7 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
     return allClasses;
   }
 
-  /**
-   * Inspects if a class is an entity class or not
-   *
-   * @param entityType class to be inspected
-   * @return true if class of parameter entityType is annotated with {@link Entity} todo or manually registered different
-   */
-  public boolean isEntityType(Class entityType) {
-    return entityTypes.contains(entityType) || entityType.isAnnotationPresent(Entity.class);
-  }
+
 
   private void gatherInterfaces(Set<Class> superInterfaces, Class _class) {
     if (_class.getInterfaces() != null) {
@@ -173,7 +176,7 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
     PrimaryIndex<IdentityType, EntityType> index = (PrimaryIndex<IdentityType, EntityType>) getPrimaryIndices().get(entityType);
     if (index == null) {
       if (!isEntityType(entityType)) {
-        throw new NotRegisteredAsPrimaryIndexException(entityType);
+        getEntityTypes().add(entityType);
       }
       index = new PrimaryIndex<IdentityType, EntityType>(this, identityType, entityType);
       getPrimaryIndices().put(entityType, index);

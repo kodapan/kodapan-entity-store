@@ -5,6 +5,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.kodapan.common>0.2-SNAPSHOT</version.kodapan.common>
   </properties>
 
 
@@ -17,6 +18,8 @@
   <modules>
     <module>annotations</module>
     <module>core</module>
+    <module>extra</module>
+    <module>exampledomain</module>
   </modules>
 
 

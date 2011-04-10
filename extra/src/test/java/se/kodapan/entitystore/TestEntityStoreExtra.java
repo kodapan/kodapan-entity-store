@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author kalle
  * @since 2010-jul-10 23:17:43
  */
-public class TestEntityStore extends TestCase {
+public class TestEntityStoreExtra extends TestCase {
 
   @Test
   public void test() {

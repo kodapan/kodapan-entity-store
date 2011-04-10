@@ -27,18 +27,18 @@ import java.util.Set;
  * @author kalle
  * @since 2010-jul-10 00:37:11
  */
-public abstract class AbstractSecondaryIndex<ResultType, IdentityType, EntityType>
-    implements SecondaryIndex<ResultType, IdentityType, EntityType> {
+public abstract class AbstractSecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType>
+    implements SecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType> {
 
   private static final long serialVersionUID = 1l;
 
   private String name;
-  private PrimaryIndex<IdentityType, EntityType> primaryIndex;
+  private PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex;
 
   protected AbstractSecondaryIndex() {
   }
 
-  protected AbstractSecondaryIndex(String name, PrimaryIndex<IdentityType, EntityType> primaryIndex) {
+  protected AbstractSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex) {
     this.name = name;
     this.primaryIndex = primaryIndex;
   }
@@ -87,11 +87,11 @@ public abstract class AbstractSecondaryIndex<ResultType, IdentityType, EntityTyp
   }
 
   @Override
-  public PrimaryIndex<IdentityType, EntityType> getPrimaryIndex() {
+  public PrimaryIndex<PrimaryIndexIdentityType, EntityType> getPrimaryIndex() {
     return primaryIndex;
   }
 
-  public void setPrimaryIndex(PrimaryIndex<IdentityType, EntityType> primaryIndex) {
+  public void setPrimaryIndex(PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex) {
     this.primaryIndex = primaryIndex;
   }
 

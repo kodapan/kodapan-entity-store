@@ -16,17 +16,13 @@
 
 package se.kodapan.entitystore;
 
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-
 import java.io.*;
 import java.util.Date;
 
 /**
  * Generates 12 bytes long deterministic identities using timestamp and an integer counter.
  * <p/>
- *
+ * <p/>
  * That means one single transaction (the same execution time) can not produce more than Integer.MAX_VALUE identities,
  * after that a new transaction must be created. (remember children, 640 kilobytes RAM should be enough for anyone!)
  *
@@ -54,7 +50,7 @@ public class DeterministicUIDHandler implements IdentityFactory<String>, Seriali
       previousExecutionTime = (Date) objectInput.readObject();
       previousExecutionTimeSequence = objectInput.readInt();
     } else {
-throw new IOException("Unsupported local version " + version + ", expected 1");
+      throw new IOException("Unsupported local version " + version + ", expected 1");
     }
   }
 
@@ -157,8 +153,8 @@ throw new IOException("Unsupported local version " + version + ", expected 1");
     return sb.toString();
   }
 
-  public static DeterministicUID decode(String hex) throws DecoderException {
-    return decode(Hex.decodeHex(hex.toCharArray()));
+  public static DeterministicUID decode(String hex) {
+    return decode(hex2ByteArray(hex));
   }
 
   public static DeterministicUID decode(byte[] bytes) {
@@ -229,5 +225,31 @@ throw new IOException("Unsupported local version " + version + ", expected 1");
     public final int getSequence() {
       return sequence;
     }
+  }
+
+
+  private static final String hexVal = "0123456789ABCDEF";
+
+  /**
+   * http://stackoverflow.com/questions/140131/convert-a-string-representation-of-a-hex-dump-to-a-byte-array-using-java
+   *
+   * @param hexString
+   * @return
+   */
+  public static byte[] hex2ByteArray(String hexString) {
+    hexString = hexString.toUpperCase();
+    byte[] out = new byte[hexString.length() / 2];
+
+    int n = hexString.length();
+
+    for (int i = 0; i < n; i += 2) {
+      //make a bit representation in an int of the hex value
+      int hn = hexVal.indexOf(hexString.charAt(i));
+      int ln = hexVal.indexOf(hexString.charAt(i + 1));
+      //now just shift the high order nibble and add them together
+      out[i / 2] = (byte) ((hn << 4) | ln);
+    }
+
+    return out;
   }
 }
