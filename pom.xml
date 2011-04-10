@@ -15,9 +15,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>core</module>
     <module>annotations</module>
-    <module>tools</module>
+    <module>core</module>
   </modules>
 
 
