@@ -16,7 +16,7 @@
 
 package se.kodapan.entitystore;
 
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -38,7 +38,7 @@ public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType,
 
   private static final long serialVersionUID = 1l;
 
-  private MapSet<Object, ResultType> mapSet = new MapSet<Object, ResultType>();
+  private SetMap<Object, ResultType> mapSet = new SetMap<Object, ResultType>();
 
   protected MapSetSecondaryIndex() {
   }
@@ -47,7 +47,7 @@ public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType,
     super(name, entityTypePrimaryIndex);
   }
 
-  protected MapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, ResultType> mapSet) {
+  protected MapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, SetMap<Object, ResultType> mapSet) {
     super(name, entityTypePrimaryIndex);
     this.mapSet = mapSet;
   }
@@ -65,7 +65,7 @@ public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType,
     super.readExternal(objectInput);
     int version = objectInput.readInt();
     if (version == 1) {
-      mapSet = (MapSet) objectInput.readObject();
+      mapSet = (SetMap) objectInput.readObject();
 
     } else {
       throw new IOException("Unsupported local version " + version + ", expected 1");
@@ -101,11 +101,11 @@ public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType,
   }
 
 
-  public MapSet<Object, ResultType> getMapSet() {
+  public SetMap<Object, ResultType> getMapSet() {
     return mapSet;
   }
 
-  public void setMapSet(MapSet<Object, ResultType> mapSet) {
+  public void setMapSet(SetMap<Object, ResultType> mapSet) {
     this.mapSet = mapSet;
   }
 

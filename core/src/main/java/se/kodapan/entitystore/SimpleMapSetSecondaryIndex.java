@@ -1,6 +1,6 @@
 package se.kodapan.entitystore;
 
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 
 /**
  * Entity type is also the result type
@@ -18,7 +18,7 @@ public abstract class SimpleMapSetSecondaryIndex<PrimaryIndexIdentityType, Entit
     super(name, entityTypePrimaryIndex);
   }
 
-  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, MapSet<Object, EntityType> objectEntityTypeMapSet) {
+  protected SimpleMapSetSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> entityTypePrimaryIndex, SetMap<Object, EntityType> objectEntityTypeMapSet) {
     super(name, entityTypePrimaryIndex, objectEntityTypeMapSet);
   }
 

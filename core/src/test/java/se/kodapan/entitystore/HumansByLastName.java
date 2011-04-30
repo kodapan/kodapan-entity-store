@@ -1,6 +1,6 @@
 package se.kodapan.entitystore;
 
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 import se.kodapan.entitystore.domain.Human;
 
 /**
@@ -16,7 +16,7 @@ public class HumansByLastName extends SimpleMapSetSecondaryIndex<Long, Human> {
     super(name, longHumanPrimaryIndex);
   }
 
-  public HumansByLastName(String name, PrimaryIndex<Long, Human> longHumanPrimaryIndex, MapSet<Object, Human> objectHumanMapSet) {
+  public HumansByLastName(String name, PrimaryIndex<Long, Human> longHumanPrimaryIndex, SetMap<Object, Human> objectHumanMapSet) {
     super(name, longHumanPrimaryIndex, objectHumanMapSet);
   }
 

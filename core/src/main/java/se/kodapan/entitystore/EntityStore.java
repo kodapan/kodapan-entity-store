@@ -40,15 +40,6 @@ public interface EntityStore {
    */
   public abstract <IdentityType, EntityType> EntityType remove(Class<EntityType> entityType, IdentityType identity) throws EntityStoreException;
 
-
-  /**
-   * @param entityType
-   * @param <EntityType>
-   * @return
-   * @throws EntityStoreException mainly if method accessed prior to using {@link #getPrimaryIndex(Class, Class)} to register the identity class.
-   */
-  public abstract <EntityType> PrimaryIndex<Object, EntityType> getPrimaryIndex(Class<EntityType> entityType) throws EntityStoreException;
-
   /**
    * Retrieves primary index for the given parameters,
    * or register and creates it if not yet existing.

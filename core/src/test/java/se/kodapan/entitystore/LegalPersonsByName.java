@@ -1,6 +1,6 @@
 package se.kodapan.entitystore;
 
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 import se.kodapan.entitystore.domain.LegalPerson;
 
 /**
@@ -16,7 +16,7 @@ public class LegalPersonsByName extends SimpleMapSetSecondaryIndex<Long, LegalPe
     super(name, longLegalPersonPrimaryIndex);
   }
 
-  public LegalPersonsByName(String name, PrimaryIndex<Long, LegalPerson> longLegalPersonPrimaryIndex, MapSet<Object, LegalPerson> objectLegalPersonMapSet) {
+  public LegalPersonsByName(String name, PrimaryIndex<Long, LegalPerson> longLegalPersonPrimaryIndex, SetMap<Object, LegalPerson> objectLegalPersonMapSet) {
     super(name, longLegalPersonPrimaryIndex, objectLegalPersonMapSet);
   }
 

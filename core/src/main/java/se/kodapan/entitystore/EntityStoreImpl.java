@@ -18,7 +18,7 @@ package se.kodapan.entitystore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 import se.kodapan.lang.reflect.augmentation.Aggregation;
 import se.kodapan.lang.reflect.augmentation.BinaryAssociationClassEnd;
 import se.kodapan.lang.reflect.augmentation.BinaryAssociationEnd;
@@ -34,7 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EntityStoreImpl implements EntityStore, Serializable, Externalizable {
 
-  public static Logger log = LoggerFactory.getLogger(EntityStoreImpl.class);
+  private static Logger log = LoggerFactory.getLogger(EntityStoreImpl.class);
+
   private static final long serialVersionUID = 1l;
 
   private Map<Class, PrimaryIndex> primaryIndices = new ConcurrentHashMap<Class, PrimaryIndex>();
@@ -157,8 +158,7 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
     }
   }
 
-  @Override
-  public <EntityType> PrimaryIndex<Object, EntityType> getPrimaryIndex(Class<EntityType> entityType) {
+  protected <EntityType> PrimaryIndex<Object, EntityType> getPrimaryIndex(Class<EntityType> entityType) {
     if (!isEntityType(entityType)) {
       throw new NotRegisteredAsPrimaryIndexException(entityType);
     }
@@ -275,26 +275,25 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
         }
 
         if (end.getQualification() != null) {
-          // todo qualifications
 
           // has qualifications
           if (end.getBinaryAssociation().getAssociationClassEnds() != null) {
             // has qualifications and association class
             if (end.getMultiplicity().isMaximumOne()) {
               // this is a Map
-              throw new UnsupportedOperationException("Not implemented");
+              throw new UnsupportedOperationException("Not implemented"); // todo
             } else {
               // this is a MapSet
-              throw new UnsupportedOperationException("Not implemented");
+              throw new UnsupportedOperationException("Not implemented"); // todo
             }
           } else {
             // has qualifications without association class
             if (end.getMultiplicity().isMaximumOne()) {
               // this is a Map
-              throw new UnsupportedOperationException("Not implemented");
+              throw new UnsupportedOperationException("Not implemented"); // todo
             } else {
               // this is a MapSet
-              throw new UnsupportedOperationException("Not implemented");
+              throw new UnsupportedOperationException("Not implemented"); // todo
             }
           }
 
@@ -361,7 +360,7 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
             ((Map) otherEnd.getAccessor().get(otherEndInstance)).values().remove(associationClassInstance);
           } else {
             // this is a MapSet
-            ((MapSet) otherEnd.getAccessor().get(otherEndInstance)).removeSetValue(associationClassInstance);
+            ((SetMap) otherEnd.getAccessor().get(otherEndInstance)).removeSetValue(associationClassInstance);
           }
         } else {
           // has qualifications without association class

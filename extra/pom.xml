@@ -11,7 +11,7 @@
 
   <groupId>se.kodapan.entity-store</groupId>
   <artifactId>extra</artifactId>
-  <version>${project.parent.version}</version>
+  <version>0.2.1-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
     <dependency>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>annotations</artifactId>
-      <version>${project.parent.version}</version>
+      <version>0.2.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -33,21 +33,14 @@
     <dependency>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>core</artifactId>
-      <version>${project.parent.version}</version>
+      <version>0.2.1-SNAPSHOT</version>
     </dependency>
-
-    <dependency>
-      <groupId>se.kodapan.common</groupId>
-      <artifactId>silvertejp</artifactId>
-      <version>${version.kodapan.common}</version>
-    </dependency>
-
 
     <dependency>
       <scope>test</scope>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>exampledomain</artifactId>
-      <version>${project.parent.version}</version>
+      <version>0.2.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>

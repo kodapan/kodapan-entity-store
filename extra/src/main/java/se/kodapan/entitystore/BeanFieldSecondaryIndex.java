@@ -16,7 +16,7 @@
 
 package se.kodapan.entitystore;
 
-import se.kodapan.collections.MapSet;
+import se.kodapan.collections.SetMap;
 import se.kodapan.lang.reflect.ReflectionUtil;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class BeanFieldSecondaryIndex<PrimaryIndexIdentityType, EntityType, Attri
     this.fieldName = fieldName;
   }
 
-  public BeanFieldSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName, MapSet<Object, EntityType> map) {
+  public BeanFieldSecondaryIndex(String name, PrimaryIndex<PrimaryIndexIdentityType, EntityType> primaryIndex, Class<AttributeType> fieldType, String fieldName, SetMap<Object, EntityType> map) {
     super(name, primaryIndex, map);
     this.fieldType = fieldType;
     this.fieldName = fieldName;
