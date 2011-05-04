@@ -20,13 +20,13 @@
     <dependency>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>annotations</artifactId>
-      <version>0.2.1-SNAPSHOT</version>
+      <version>0.2.2-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>se.kodapan.common</groupId>
       <artifactId>silvertejp</artifactId>
-      <version>0.2.1-SNAPSHOT</version>
+      <version>0.2.2-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>se.kodapan.common</groupId>
       <artifactId>collections</artifactId>
-      <version>0.2.1-SNAPSHOT</version>
+      <version>0.2.2-SNAPSHOT</version>
     </dependency>
 
     <dependency>
