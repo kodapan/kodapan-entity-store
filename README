@@ -6,7 +6,7 @@ POJOs are added to the primary index of all super classes and super interfaces,
 making it possible to iterate and access all instances of a certain type.
 
 There is abstract support for secondary indices
-using a Map<SecondaryKey, Set<Entity>>,
+implemented using a Map<SecondaryKey, Set<Entity>>,
 but could be anything from a iterator to a Lucene index if you want to save RAM.
 
 Annotation at field level using UML class diagram semantics is used
