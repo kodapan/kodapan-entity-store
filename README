@@ -1,55 +1,45 @@
-Entity object management I wrote for a project of mine that use Prevayler.
+POJO entity store, intended for use with Prevayler.
 
-Basically a thick layer around the two following classes:
+POJOs does not have to aware of their own identity.
 
-/** All identifiable objects stored in a primary index must implement this class */
-interface EntityObject {
-  String getId();
-}
+POJOs are added to the primary index of all super classes and super interfaces,
+making it possible to iterate and access all instances of a certain type.
+
+There is abstract support for secondary indices
+using a Map<SecondaryKey, Set<Entity>>,
+but could be anything from a iterator to a Lucene index if you want to save RAM.
+
+Annotation at field level using UML class diagram semantics is used
+to de/couple associations etc when POJOs are updated in the entity store.
+
+
+The most abstract version of this API looks something like this:
 
 class EntityStore {
-  /** One primary index per class and superclass assignable from EntityObject.
-      Makes it possible to iterate all instances of any entity class.
-      All entity objects are thus available as key EntityObject.class */
-  Map<Class<? extends EntityObject>, Map<String, EntityObject>> primaryIndices;
+  PrimaryIndex<IdentityType, EntityType> getPrimaryIndex(Class<IdentityType> identityType, Class<EntityType> entityType);
+}
 
-  Map<String, Map<Object, Set<EntityObject>>> secondaryIndices;
+class PrimaryIndex<IdentityType, EntityType> implements Iterable<EntityType> {
+  SecondaryIndex getSecondaryIndex(String name);
+  EntityType put(IdentityType identity, EntityType entity);
+  EntityType get(IdentityType identity);
+  EntityType remove(IdentityType identity);
+}
+
+class SecondaryIndex<ResultType, IdentityType, EntityType> {
+  ResultType get(Object... parameters);
+  Set<ResultType> list(Object... parameters);
 }
 
 
 Caveat emptor:
-* Forced string identity. (This might change to a byte[].)
 * Identities must be unique within the application, eg a UUID. (Comes with DeterministicUIDHandler)
-* Identities must be set before putting an entity to the store.
 * Secondary indices will not be updated unless you re-put the entity in the store or rebuild the secondary index.
+* Identities must be set before putting an entity to the store.
 
 
-There is virtually no documentation but hopefully the API is simple enough:
 
-class EntityStore {
-  EntityObject put(EntityObject entity);
-  EntityObject get(String id);
-  boolean remove(String id);
-  PrimaryIndex<EntityType> getPrimaryIndex(Class<EntityType> entityType);
-  SecondaryIndex getSecondaryIndex(String name);
-  boolean registerSecondaryIndex(String name, SecondaryIndex secondaryIndex);
-}
-
-class PrimaryIndex<EntityType extends EntityObject> implement Iterable<EntityType> {
-  EntityType put(EntityType entity);
-  EntityType get(String id);
-  boolean remove(String id);
-  Map<String, EntityType> getEntitiesById();
-}
-
-abstract class SecondaryIndex<EntityType extends EntityObject> {
-  /** There are simple reflection based implementations */
-  abstract Object keyFactory(EntityType entity);
-  void put(EntityType entity);
-  boolean remove(EntityType entity);
-  EntityType get(Object... parameters);
-  Set<EntityType> list(Object... parameters);
-}
+There is virtually no documentation but a bit of unit tests:
 
 http://github.com/karlwettin/kodapan-entity-store/blob/master/src/test/java/se/kodapan/index/TestEntityStore.java
 
@@ -57,9 +47,7 @@ The test domain model can be viewed as UML class diagram here:
 
 http://github.com/karlwettin/kodapan-entity-store/raw/master/src/test/java/se/kodapan/index/domain/doc-files/classdiagram.pdf
 
-Beans can optionally be augmented with UML class diagram syntax annotations @BinaryAssociationEnd and @BinaryAssociationClassEnd on fields, getters or setters to have the entity store automatically decouple instance from other ends and remove composite parts when the instance is removed. Compare with relational annotations for casacading, many to one and what not, but using OO syntax. Decoupling qualified binary associations (Maps) has not yet been implemented.
 
-I hope you find this a useful package but any comments or reports are most welcome!
 
 
 This depends on maven project kodapan-common <http://github.com/karlwettin/kodapan-common> for annotations, reflection and collections. mvn install. I think some of you might question the SerializableBean class and want to remove it. It's work in progress for a more refactor friendly java serialization.
