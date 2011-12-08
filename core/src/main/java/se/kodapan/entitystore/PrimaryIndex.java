@@ -33,12 +33,20 @@ public class PrimaryIndex<IdentityType, EntityType>
 
   private static final long serialVersionUID = 1l;
 
+  private void readObject(java.io.ObjectInputStream in)
+      throws IOException, ClassNotFoundException {
+      in.defaultReadObject();
+      listeners = new HashSet<PrimaryIndexListener<IdentityType, EntityType>>();
+  }
+
   public static Logger log = LoggerFactory.getLogger(PrimaryIndex.class);
+
+
+  private transient Set<PrimaryIndexListener<IdentityType, EntityType>> listeners = new HashSet<PrimaryIndexListener<IdentityType, EntityType>>();
 
   private ReentrantLock updateLock = new ReentrantLock();
 
 
-  private transient Set<PrimaryIndexListener<IdentityType, EntityType>> listeners = new HashSet<PrimaryIndexListener<IdentityType, EntityType>>();
 
   private EntityStoreImpl store;
 
