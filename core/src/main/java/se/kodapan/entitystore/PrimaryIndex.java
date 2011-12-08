@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 2010-jul-10 01:11:07
  */
 public class PrimaryIndex<IdentityType, EntityType>
-    implements Serializable, Externalizable, Iterable<EntityType> {
+    implements Serializable, Iterable<EntityType> {
 
   private static final long serialVersionUID = 1l;
 
@@ -60,31 +60,6 @@ public class PrimaryIndex<IdentityType, EntityType>
     this.entityType = entityType;
     this.identityType = identityType;
     setEntitiesById(entitiesById);
-  }
-
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    objectOutput.writeInt(1); // version
-    objectOutput.writeObject(store);
-    objectOutput.writeObject(entityType);
-    objectOutput.writeObject(entitiesById);
-    objectOutput.writeObject(secondaryIndicesByName);
-
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    int version = objectInput.readInt();
-    if (version == 1) {
-      store = (EntityStoreImpl) objectInput.readObject();
-      entityType = (Class) objectInput.readObject();
-      entitiesById = ((Map) objectInput.readObject());
-      secondaryIndicesByName = ((Map) objectInput.readObject());
-    } else {
-      throw new IOException("Unsupported local version " + version + ", expected 1");
-    }
-
   }
 
   public IdentityType getIdentity(EntityType entity) {

@@ -29,30 +29,12 @@ import java.util.Date;
  * @author kalle
  * @since 2010-jan-09 12:47:22
  */
-public class DeterministicUIDHandler implements IdentityFactory<String>, Serializable, Externalizable {
+public class DeterministicUIDHandler implements IdentityFactory<String>, Serializable {
 
   private static final long serialVersionUID = 1l;
 
   private Date previousExecutionTime = new Date(0);
   private int previousExecutionTimeSequence = 0;
-
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    objectOutput.writeInt(1); // local object version
-    objectOutput.writeObject(previousExecutionTime);
-    objectOutput.writeInt(previousExecutionTimeSequence);
-  }
-
-  @Override
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    int version = objectInput.readInt();
-    if (version == 1) {
-      previousExecutionTime = (Date) objectInput.readObject();
-      previousExecutionTimeSequence = objectInput.readInt();
-    } else {
-      throw new IOException("Unsupported local version " + version + ", expected 1");
-    }
-  }
 
   @Override
   public synchronized String nextIdentity(Date executionTime) {

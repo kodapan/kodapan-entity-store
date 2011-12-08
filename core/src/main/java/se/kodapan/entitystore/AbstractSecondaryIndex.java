@@ -44,27 +44,6 @@ public abstract class AbstractSecondaryIndex<ResultType, PrimaryIndexIdentityTyp
   }
 
   @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    objectOutput.writeInt(1); // version
-    objectOutput.writeObject(name);
-    objectOutput.writeObject(primaryIndex);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    int version = objectInput.readInt();
-    if (version == 1) {
-      name = (String) objectInput.readObject();
-      primaryIndex = (PrimaryIndex) objectInput.readObject();
-
-    } else {
-      throw new IOException("Unsupported local version " + version + ", expected 1");
-    }
-
-  }
-
-  @Override
   public ResultType get(Object... parameters) {
     Set<ResultType> results = list(parameters);
     if (results == null || results.size() == 0) {

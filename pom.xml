@@ -10,7 +10,7 @@
 
   <groupId>se.kodapan.entity-store</groupId>
   <artifactId>entity-store</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
 
   <packaging>pom</packaging>
 
@@ -79,14 +79,6 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
-    <repository>
-      <id>kodapan</id>
-      <url>scp://kodapan.se/home/kalle/www/kodapan/maven/repository</url>
-    </repository>
-  </distributionManagement>
-
-
   <developers>
     <developer>
       <id>kalle</id>
@@ -101,14 +93,6 @@
     </developer>
   </developers>
 
-
-
-  <mailingLists>
-    <mailingList>
-      <name>Project mailing list</name>
-      <post>entity-store@kodapan.se</post>
-    </mailingList>
-  </mailingLists>
 
   <scm>
     <url>http://github.com/karlwettin/kodapan-entity-store</url>

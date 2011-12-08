@@ -6,12 +6,11 @@
   <parent>
     <groupId>se.kodapan.entity-store</groupId>
     <artifactId>entity-store</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
   </parent>
 
   <groupId>se.kodapan.entity-store</groupId>
   <artifactId>annotations</artifactId>
-  <version>0.2.2</version>
 
   <packaging>jar</packaging>
 

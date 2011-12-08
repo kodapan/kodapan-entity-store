@@ -27,7 +27,7 @@ import java.util.Set;
  * @param <ResultType> Result type
  * @param <EntityType> Primary index entity type.
  */
-public interface SecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType> extends Serializable, Externalizable {
+public interface SecondaryIndex<ResultType, PrimaryIndexIdentityType, EntityType> extends Serializable {
 
 
   /**

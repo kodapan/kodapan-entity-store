@@ -52,28 +52,6 @@ public abstract class MapSetSecondaryIndex<ResultType, PrimaryIndexIdentityType,
     this.mapSet = mapSet;
   }
 
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    super.writeExternal(objectOutput);
-    objectOutput.writeInt(1); // version
-    objectOutput.writeObject(mapSet);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    super.readExternal(objectInput);
-    int version = objectInput.readInt();
-    if (version == 1) {
-      mapSet = (SetMap) objectInput.readObject();
-
-    } else {
-      throw new IOException("Unsupported local version " + version + ", expected 1");
-    }
-
-  }
-
-
   /**
    * Reconstructs the secondary index based on all items in the primary index.
    *

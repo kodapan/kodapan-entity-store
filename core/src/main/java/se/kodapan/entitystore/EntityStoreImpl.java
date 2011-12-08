@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kalle
  * @since 2010-jul-10 00:29:40
  */
-public class EntityStoreImpl implements EntityStore, Serializable, Externalizable {
+public class EntityStoreImpl implements EntityStore, Serializable {
 
   private static Logger log = LoggerFactory.getLogger(EntityStoreImpl.class);
 
@@ -47,32 +47,6 @@ public class EntityStoreImpl implements EntityStore, Serializable, Externalizabl
    * or be annotated at class level with @Entity
    */
   private Set<Class> entityTypes = new HashSet<Class>();
-
-
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    objectOutput.writeInt(2); // local version
-    objectOutput.writeObject(primaryIndices);
-    objectOutput.writeObject(secondaryIndicesByName);
-    objectOutput.writeObject(entityTypes);
-  }
-
-  @Override
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    int version = objectInput.readInt();
-    if (version == 1) {
-      IdentityFactory identityFactory = (IdentityFactory) objectInput.readObject();
-      primaryIndices = (Map<Class, PrimaryIndex>) objectInput.readObject();
-      secondaryIndicesByName = (Map<String, SecondaryIndex>) objectInput.readObject();
-      entityTypes = (Set<Class>)objectInput.readObject();
-    } else if (version == 2) {
-      primaryIndices = (Map<Class, PrimaryIndex>) objectInput.readObject();
-      secondaryIndicesByName = (Map<String, SecondaryIndex>) objectInput.readObject();
-      entityTypes = (Set<Class>)objectInput.readObject();
-    } else {
-      throw new IOException("Unsupported local version " + version + ", expected 1 or 2.");
-    }
-  }
 
   /**
    * Adds a secondary index to the store.
