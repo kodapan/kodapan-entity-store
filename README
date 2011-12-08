@@ -50,9 +50,7 @@ http://github.com/karlwettin/kodapan-entity-store/raw/master/src/test/java/se/ko
 
 
 
-This depends on maven project kodapan-common <http://github.com/karlwettin/kodapan-common> for annotations, reflection and collections. mvn install. I think some of you might question the SerializableBean class and want to remove it. It's work in progress for a more refactor friendly java serialization.
-
-Also available in maven repository at <http://kodapan.se/maven/repository>.
+This depends on maven project kodapan-common <http://github.com/karlwettin/kodapan-common> for annotations, reflection and collections. mvn install.
 
 
 karl.wettin@gmail.com
