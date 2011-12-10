@@ -38,6 +38,13 @@ public class EntityStoreImpl implements EntityStore, Serializable {
 
   private static final long serialVersionUID = 1l;
 
+  private void readObject(java.io.ObjectInputStream in)
+      throws IOException, ClassNotFoundException {
+      in.defaultReadObject();
+      primaryIndexClassesByClass = new HashMap<Class, Set<Class>>();
+  }
+
+
   private Map<Class, PrimaryIndex> primaryIndices = new ConcurrentHashMap<Class, PrimaryIndex>();
   private Map<String, SecondaryIndex> secondaryIndicesByName = new HashMap<String, SecondaryIndex>();
 
