@@ -22,7 +22,6 @@
   </modules>
 
 
-
   <build>
     <plugins>
 
@@ -105,5 +104,38 @@
     <url>http://github.com/karlwettin/kodapan-entity-store/issues</url>
   </issueManagement>
 
+
+  <dependencyManagement>
+    <dependencies>
+
+
+      <!-- our modules -->
+
+      <dependency>
+        <groupId>se.kodapan.entity-store</groupId>
+        <artifactId>annotations</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>se.kodapan.entity-store</groupId>
+        <artifactId>core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>se.kodapan.entity-store</groupId>
+        <artifactId>exampledomain</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>se.kodapan.entity-store</groupId>
+        <artifactId>extra</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
 
 </project>

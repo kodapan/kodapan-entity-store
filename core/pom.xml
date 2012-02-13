@@ -31,7 +31,6 @@
     <dependency>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>annotations</artifactId>
-      <version>0.2.2</version>
     </dependency>
 
     <dependency>
@@ -58,7 +57,6 @@
       <scope>test</scope>
       <groupId>se.kodapan.entity-store</groupId>
       <artifactId>exampledomain</artifactId>
-      <version>0.2.2</version>
     </dependency>
 
     <dependency>

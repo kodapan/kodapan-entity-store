@@ -52,26 +52,6 @@ public class BeanFieldSecondaryIndex<PrimaryIndexIdentityType, EntityType, Attri
     this.fieldName = fieldName;
   }
 
-  @Override
-  public void writeExternal(ObjectOutput objectOutput) throws IOException {
-    super.writeExternal(objectOutput);
-    objectOutput.writeInt(1); // local version
-    objectOutput.writeObject(fieldType);
-    objectOutput.writeObject(fieldName);
-  }
-
-  @Override
-  public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-    super.readExternal(objectInput);
-    int version = objectInput.readInt();
-    if (version == 1) {
-      fieldType = (Class)objectInput.readObject();
-      fieldName = (String)objectInput.readObject();
-    } else {
-throw new IOException("Unsupported local version " + version + ", expected 1");
-    }
-  }
-
   public Method getGetter() throws NoSuchFieldException, NoSuchMethodException {
     if (getter == null) {
       getter = ReflectionUtil.getGetter(getPrimaryIndex().getEntityType(), fieldName);
